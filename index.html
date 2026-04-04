@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Party Planner Trek</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>🎉 Party Planner Trek</h1>
+    <p>Plan the perfect party, every time.</p>
+</header>
+
+<main>
+
+    <!-- Party Type -->
+    <section id="section-type">
+        <h2>What kind of party?</h2>
+        <div id="party-types">
+            <button class="type-btn active" data-type="birthday">🎂 Birthday</button>
+            <button class="type-btn" data-type="wedding">💍 Wedding</button>
+            <button class="type-btn" data-type="graduation">🎓 Graduation</button>
+            <button class="type-btn" data-type="halloween">🎃 Halloween</button>
+            <button class="type-btn" data-type="holiday">🎄 Holiday</button>
+            <button class="type-btn" data-type="custom">✨ Custom</button>
+        </div>
+    </section>
+
+    <div id="planner-grid">
+
+        <!-- Checklist -->
+        <section id="section-checklist">
+            <h2>Checklist</h2>
+            <ul id="checklist"></ul>
+            <div id="checklist-add">
+                <input type="text" id="checklist-input" placeholder="Add a task...">
+                <button id="checklist-btn">Add</button>
+            </div>
+        </section>
+
+        <!-- Guest List -->
+        <section id="section-guests">
+            <h2>Guest List <span id="guest-count">0</span></h2>
+            <ul id="guest-list"></ul>
+            <div id="guest-add">
+                <input type="text" id="guest-input" placeholder="Guest name...">
+                <button id="guest-btn">Add</button>
+            </div>
+        </section>
+
+        <!-- Budget -->
+        <section id="section-budget">
+            <h2>Budget</h2>
+            <div id="budget-summary">
+                <div class="budget-stat">
+                    <span class="stat-label">Total Budget</span>
+                    <input type="number" id="budget-total" placeholder="0" min="0">
+                </div>
+                <div class="budget-stat">
+                    <span class="stat-label">Spent</span>
+                    <span id="budget-spent">$0</span>
+                </div>
+                <div class="budget-stat">
+                    <span class="stat-label">Remaining</span>
+                    <span id="budget-remaining">$0</span>
+                </div>
+            </div>
+            <ul id="expense-list"></ul>
+            <div id="expense-add">
+                <input type="text" id="expense-name" placeholder="Item...">
+                <input type="number" id="expense-cost" placeholder="Cost" min="0">
+                <button id="expense-btn">Add</button>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
