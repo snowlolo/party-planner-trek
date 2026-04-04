@@ -1,3 +1,50 @@
+// ── Music ──
+const MUSIC = {
+    birthday:   { id: 'ZbZSe6N_BXs', title: 'Birthday Party Mix' },
+    wedding:    { id: 'GRxofEmo3HA', title: 'Canon in D — Wedding Music' },
+    graduation: { id: 'Sj_9CiNkkn4', title: 'Pomp and Circumstance' },
+    halloween:  { id: 'HqylqMF4SRo', title: 'Halloween Music Mix' },
+    holiday:    { id: 'aAkMkVFwAoo', title: 'Christmas Music Mix' },
+    custom:     { id: 'jfKfPfyJRdk', title: 'Chill Party Beats' },
+};
+
+let ytPlayer;
+
+window.onYouTubeIframeAPIReady = function () {
+    ytPlayer = new YT.Player('yt-player', {
+        height: '140',
+        width: '250',
+        videoId: MUSIC['birthday'].id,
+        playerVars: { autoplay: 0, controls: 1, rel: 0 },
+        events: {
+            onReady: function (e) {
+                e.target.setVolume(50);
+                document.getElementById('music-title').textContent = MUSIC['birthday'].title;
+            }
+        }
+    });
+};
+
+function loadMusic(type) {
+    if (ytPlayer && ytPlayer.loadVideoById) {
+        ytPlayer.loadVideoById(MUSIC[type].id);
+        ytPlayer.pauseVideo();
+    }
+    document.getElementById('music-title').textContent = MUSIC[type].title;
+}
+
+document.getElementById('volume-slider').addEventListener('input', function () {
+    if (ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(parseInt(this.value));
+    document.getElementById('volume-display').textContent = this.value + '%';
+});
+
+// ── Theme toggle ──
+const themeBtn = document.getElementById('theme-toggle');
+themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeBtn.textContent = document.body.classList.contains('light') ? 'Dark Mode' : 'Light Mode';
+});
+
 // ── Party type checklists ──
 const DEFAULT_CHECKLISTS = {
     birthday: ['Book a venue', 'Send invitations', 'Order cake', 'Buy decorations', 'Plan activities', 'Arrange food & drinks'],
@@ -22,6 +69,7 @@ document.querySelectorAll('.type-btn').forEach(btn => {
         currentType = btn.dataset.type;
         checklist = DEFAULT_CHECKLISTS[currentType].map(t => ({ text: t, done: false }));
         renderChecklist();
+        loadMusic(currentType);
     });
 });
 
@@ -109,6 +157,7 @@ function renderBudget() {
         const li = document.createElement('li');
         li.innerHTML = `
             <span>${exp.name}</span>
+            ${exp.phone ? `<span class="phone">${exp.phone}</span>` : ''}
             <span class="cost">$${exp.cost.toFixed(2)}</span>
             <button class="remove-btn" title="Remove">✕</button>
         `;
@@ -126,10 +175,12 @@ document.getElementById('expense-cost').addEventListener('keydown', e => { if (e
 function addExpense() {
     const name = document.getElementById('expense-name').value.trim();
     const cost = parseFloat(document.getElementById('expense-cost').value) || 0;
+    const phone = document.getElementById('expense-phone').value.trim();
     if (!name || cost <= 0) return;
-    expenses.push({ name, cost });
+    expenses.push({ name, cost, phone });
     document.getElementById('expense-name').value = '';
     document.getElementById('expense-cost').value = '';
+    document.getElementById('expense-phone').value = '';
     renderBudget();
 }
 
