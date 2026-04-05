@@ -82,7 +82,96 @@ header p {
     margin-top: 4px;
 }
 
-/* ── Theme toggle ── */
+/* ── Settings button ── */
+#settings-btn {
+    background: var(--bg3);
+    color: var(--text2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+#settings-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Settings Panel ── */
+#settings-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+}
+#settings-overlay.open { opacity: 1; pointer-events: all; }
+
+#settings-panel {
+    position: fixed;
+    top: 0; right: 0;
+    height: 100vh;
+    width: 300px;
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    padding: 28px 24px;
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+#settings-panel.open { transform: translateX(0); }
+
+#settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#settings-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+}
+#settings-close {
+    background: none;
+    border: none;
+    color: var(--text3);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color var(--transition), background var(--transition);
+}
+#settings-close:hover { color: var(--red); background: rgba(248,113,113,0.1); }
+
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+}
+.settings-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#music-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text2);
+}
+
+/* ── Theme toggle (inside settings) ── */
 #theme-toggle {
     background: var(--bg3);
     color: var(--text2);
@@ -464,6 +553,28 @@ button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):active {
     box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
 }
 #notes-input::placeholder { color: var(--text3); }
+
+/* ── Drag handles ── */
+.drag-handle {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    color: var(--text3);
+    font-size: 1.1rem;
+    cursor: grab;
+    padding: 2px 5px;
+    border-radius: 4px;
+    transition: color var(--transition), background var(--transition);
+    user-select: none;
+    line-height: 1;
+}
+.drag-handle:hover { color: var(--accent); background: rgba(167,139,250,0.1); }
+.drag-handle:active { cursor: grabbing; }
+
+section { position: relative; }
+
+.sortable-ghost { opacity: 0.35; }
+.sortable-chosen { box-shadow: 0 8px 32px rgba(167,139,250,0.25); }
 
 /* ── Responsive ── */
 @media (max-width: 680px) {

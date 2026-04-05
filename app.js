@@ -37,6 +37,19 @@ document.getElementById('volume-slider').addEventListener('input', function () {
     save();
 });
 
+// ── Settings panel ──
+const settingsBtn   = document.getElementById('settings-btn');
+const settingsPanel = document.getElementById('settings-panel');
+const settingsClose = document.getElementById('settings-close');
+const overlay       = document.getElementById('settings-overlay');
+
+function openSettings()  { settingsPanel.classList.add('open'); overlay.classList.add('open'); }
+function closeSettings() { settingsPanel.classList.remove('open'); overlay.classList.remove('open'); }
+
+settingsBtn.addEventListener('click', openSettings);
+settingsClose.addEventListener('click', closeSettings);
+overlay.addEventListener('click', closeSettings);
+
 // ── Theme toggle ──
 const themeBtn = document.getElementById('theme-toggle');
 themeBtn.addEventListener('click', () => {
@@ -44,6 +57,18 @@ themeBtn.addEventListener('click', () => {
     const isLight = document.body.classList.contains('light');
     themeBtn.textContent = isLight ? 'Dark Mode' : 'Light Mode';
     setCookie('ppt-theme', isLight ? 'light' : 'dark');
+});
+
+// ── Drag to reorder ──
+Sortable.create(document.getElementById('planner-grid'), {
+    handle: '.drag-handle',
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    onEnd: () => {
+        const order = [...document.querySelectorAll('#planner-grid section')].map(s => s.id);
+        setCookie('ppt-order', JSON.stringify(order));
+    }
 });
 
 // ── Party type checklists ──
@@ -121,6 +146,16 @@ function load() {
     audio.volume = vol / 100;
 
     loadMusic(currentType);
+
+    // Grid order
+    const savedOrder = JSON.parse(getCookie('ppt-order') || 'null');
+    if (savedOrder) {
+        const grid = document.getElementById('planner-grid');
+        savedOrder.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) grid.appendChild(el);
+        });
+    }
 }
 
 // ── Party type buttons ──
