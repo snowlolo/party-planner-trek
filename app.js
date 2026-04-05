@@ -59,16 +59,32 @@ themeBtn.addEventListener('click', () => {
     setCookie('ppt-theme', isLight ? 'light' : 'dark');
 });
 
-// ── Drag to reorder ──
+// ── Drag to reorder (connected grid ↔ sidebar) ──
+const sectionGroup = { name: 'sections', pull: true, put: true };
+
+function saveSectionLayout() {
+    const main    = [...document.querySelectorAll('#planner-grid section')].map(s => s.id);
+    const sidebar = [...document.querySelectorAll('#sidebar-sections section')].map(s => s.id);
+    setCookie('ppt-main-sections',    JSON.stringify(main));
+    setCookie('ppt-sidebar-sections', JSON.stringify(sidebar));
+}
+
 Sortable.create(document.getElementById('planner-grid'), {
+    group: sectionGroup,
     handle: '.drag-handle',
     animation: 150,
     ghostClass: 'sortable-ghost',
     chosenClass: 'sortable-chosen',
-    onEnd: () => {
-        const order = [...document.querySelectorAll('#planner-grid section')].map(s => s.id);
-        setCookie('ppt-order', JSON.stringify(order));
-    }
+    onEnd: saveSectionLayout,
+});
+
+Sortable.create(document.getElementById('sidebar-sections'), {
+    group: sectionGroup,
+    handle: '.drag-handle',
+    animation: 150,
+    ghostClass: 'sortable-ghost',
+    chosenClass: 'sortable-chosen',
+    onEnd: saveSectionLayout,
 });
 
 // ── Party type checklists ──
@@ -148,11 +164,18 @@ function load() {
 
     loadMusic(currentType);
 
-    // Grid order
-    const savedOrder = JSON.parse(getCookie('ppt-order') || 'null');
-    if (savedOrder) {
-        const grid = document.getElementById('planner-grid');
-        savedOrder.forEach(id => {
+    // Section layout (main grid + sidebar)
+    const mainSections    = JSON.parse(getCookie('ppt-main-sections')    || 'null');
+    const sidebarSections = JSON.parse(getCookie('ppt-sidebar-sections') || '[]');
+    const grid    = document.getElementById('planner-grid');
+    const sideBar = document.getElementById('sidebar-sections');
+
+    sidebarSections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) sideBar.appendChild(el);
+    });
+    if (mainSections) {
+        mainSections.forEach(id => {
             const el = document.getElementById(id);
             if (el) grid.appendChild(el);
         });
