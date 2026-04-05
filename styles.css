@@ -258,6 +258,14 @@ header p {
     box-shadow: var(--shadow);
 }
 
+#section-type {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+#section-type #party-types { gap: 6px; }
+#section-type .type-btn { padding: 6px 12px; font-size: 0.82rem; }
+
 #cal-header {
     display: flex;
     align-items: center;
