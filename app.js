@@ -293,8 +293,140 @@ function addExpense() {
 // ── Notes ──
 document.getElementById('notes-input').addEventListener('input', save);
 
+// ── Calendar ──
+const TYPE_COLORS = {
+    birthday: '#f472b6', wedding: '#a78bfa', graduation: '#60a5fa',
+    halloween: '#fb923c', holiday: '#4ade80', custom: '#94a3b8',
+};
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAY_NAMES   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+let calEvents = [];
+let calDate   = new Date();
+let calSelectedDate = '';
+
+function saveCalEvents() { setCookie('ppt-cal', JSON.stringify(calEvents)); }
+function loadCalEvents() { calEvents = JSON.parse(getCookie('ppt-cal') || '[]'); }
+
+function renderCalendar() {
+    const year  = calDate.getFullYear();
+    const month = calDate.getMonth();
+    document.getElementById('cal-month-year').textContent = `${MONTH_NAMES[month]} ${year}`;
+
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    DAY_NAMES.forEach(d => {
+        const el = document.createElement('div');
+        el.className = 'cal-day-header';
+        el.textContent = d;
+        grid.appendChild(el);
+    });
+
+    const firstDay    = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today       = new Date();
+
+    for (let i = 0; i < firstDay; i++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day empty';
+        grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr    = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const dayEvents  = calEvents.filter(e => e.date === dateStr);
+        const isToday    = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+
+        const el = document.createElement('div');
+        el.className = 'cal-day' + (isToday ? ' today' : '');
+
+        let html = `<span class="cal-day-num">${d}</span>`;
+        if (dayEvents.length) {
+            html += `<div class="cal-dots">`;
+            dayEvents.slice(0, 3).forEach(e => {
+                html += `<span class="cal-dot" style="background:${TYPE_COLORS[e.type] || TYPE_COLORS.custom}"></span>`;
+            });
+            html += `</div>`;
+        }
+        el.innerHTML = html;
+        el.addEventListener('click', () => openCalModal(dateStr));
+        grid.appendChild(el);
+    }
+}
+
+function openCalModal(dateStr) {
+    calSelectedDate = dateStr;
+    const [y, m, d] = dateStr.split('-');
+    document.getElementById('cal-modal-date').textContent = `${MONTH_NAMES[+m - 1]} ${+d}, ${y}`;
+    renderCalModalEvents();
+    document.getElementById('cal-modal-overlay').removeAttribute('hidden');
+}
+
+function closeCalModal() {
+    document.getElementById('cal-modal-overlay').setAttribute('hidden', '');
+    document.getElementById('cal-event-name').value = '';
+}
+
+function renderCalModalEvents() {
+    const ul = document.getElementById('cal-modal-events');
+    ul.innerHTML = '';
+    const dayEvents = calEvents.filter(e => e.date === calSelectedDate);
+    if (!dayEvents.length) {
+        ul.innerHTML = `<li style="color:var(--text3);font-size:0.85rem;">No parties yet.</li>`;
+        return;
+    }
+    dayEvents.forEach(ev => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span class="event-dot" style="background:${TYPE_COLORS[ev.type] || TYPE_COLORS.custom}"></span>
+            <span class="event-name">${ev.name}</span>
+            <span class="event-type">${ev.type}</span>
+            <button class="remove-btn" title="Delete">✕</button>
+        `;
+        li.querySelector('.remove-btn').addEventListener('click', () => {
+            calEvents = calEvents.filter(e => e.id !== ev.id);
+            saveCalEvents();
+            renderCalModalEvents();
+            renderCalendar();
+        });
+        ul.appendChild(li);
+    });
+}
+
+document.getElementById('cal-event-add-btn').addEventListener('click', () => {
+    const name = document.getElementById('cal-event-name').value.trim();
+    const type = document.getElementById('cal-event-type').value;
+    if (!name) return;
+    calEvents.push({ id: Date.now(), date: calSelectedDate, name, type });
+    saveCalEvents();
+    document.getElementById('cal-event-name').value = '';
+    renderCalModalEvents();
+    renderCalendar();
+});
+
+document.getElementById('cal-event-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('cal-event-add-btn').click();
+});
+
+document.getElementById('cal-modal-close').addEventListener('click', closeCalModal);
+document.getElementById('cal-modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('cal-modal-overlay')) closeCalModal();
+});
+
+document.getElementById('cal-prev').addEventListener('click', () => {
+    calDate.setMonth(calDate.getMonth() - 1);
+    renderCalendar();
+});
+document.getElementById('cal-next').addEventListener('click', () => {
+    calDate.setMonth(calDate.getMonth() + 1);
+    renderCalendar();
+});
+
 // ── Init ──
 load();
+loadCalEvents();
 renderChecklist();
 renderGuests();
 renderBudget();
+renderCalendar();

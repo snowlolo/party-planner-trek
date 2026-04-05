@@ -131,6 +131,40 @@
         </section>
 
     </div>
+
+    <!-- Calendar -->
+    <section id="section-calendar">
+        <div id="cal-header">
+            <button id="cal-prev">&#8592;</button>
+            <h2 id="cal-month-year"></h2>
+            <button id="cal-next">&#8594;</button>
+        </div>
+        <div id="cal-grid"></div>
+    </section>
+
+    <!-- Calendar Modal -->
+    <div id="cal-modal-overlay" hidden>
+        <div id="cal-modal">
+            <div id="cal-modal-header">
+                <h3 id="cal-modal-date"></h3>
+                <button id="cal-modal-close">✕</button>
+            </div>
+            <ul id="cal-modal-events"></ul>
+            <div id="cal-modal-add">
+                <input type="text" id="cal-event-name" placeholder="Party name...">
+                <select id="cal-event-type">
+                    <option value="birthday">Birthday</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="graduation">Graduation</option>
+                    <option value="halloween">Halloween</option>
+                    <option value="holiday">Holiday</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <button id="cal-event-add-btn">Add Party</button>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
