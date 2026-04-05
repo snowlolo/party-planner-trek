@@ -371,23 +371,8 @@ button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):active {
 #music-inner {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
     flex-wrap: wrap;
-}
-
-#yt-player {
-    border-radius: 10px;
-    overflow: hidden;
-    flex-shrink: 0;
-    border: 1px solid var(--border);
-}
-
-#music-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex: 1;
-    min-width: 200px;
 }
 
 #music-title {

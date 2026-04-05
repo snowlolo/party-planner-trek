@@ -36,15 +36,14 @@
     <!-- Music -->
     <section id="section-music">
         <h2>Party Music</h2>
+        <audio id="bg-audio" loop></audio>
         <div id="music-inner">
-            <div id="yt-player"></div>
-            <div id="music-controls">
-                <p id="music-title"></p>
-                <div id="volume-wrap">
-                    <span class="vol-label">Volume</span>
-                    <input type="range" id="volume-slider" min="0" max="100" value="50">
-                    <span id="volume-display">50%</span>
-                </div>
+            <button id="music-toggle">Play</button>
+            <p id="music-title"></p>
+            <div id="volume-wrap">
+                <span class="vol-label">Volume</span>
+                <input type="range" id="volume-slider" min="0" max="100" value="50">
+                <span id="volume-display">50%</span>
             </div>
         </div>
     </section>
@@ -115,7 +114,6 @@
     </div>
 </main>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,42 +1,42 @@
 // ── Music ──
 const MUSIC = {
-    birthday:   { id: 'ZbZSe6N_BXs', title: 'Birthday Party Mix' },
-    wedding:    { id: 'GRxofEmo3HA', title: 'Canon in D — Wedding Music' },
-    graduation: { id: 'Sj_9CiNkkn4', title: 'Pomp and Circumstance' },
-    halloween:  { id: 'HqylqMF4SRo', title: 'Halloween Music Mix' },
-    holiday:    { id: 'aAkMkVFwAoo', title: 'Christmas Music Mix' },
-    custom:     { id: 'jfKfPfyJRdk', title: 'Chill Party Beats' },
+    birthday:   { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', title: 'Birthday Party Mix' },
+    wedding:    { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', title: 'Wedding Ambience' },
+    graduation: { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', title: 'Graduation Celebration' },
+    halloween:  { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', title: 'Halloween Spooky Mix' },
+    holiday:    { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', title: 'Holiday Music' },
+    custom:     { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', title: 'Party Beats' },
 };
 
-let ytPlayer;
-
-window.onYouTubeIframeAPIReady = function () {
-    ytPlayer = new YT.Player('yt-player', {
-        height: '140',
-        width: '250',
-        videoId: MUSIC['birthday'].id,
-        playerVars: { autoplay: 0, controls: 1, rel: 0 },
-        events: {
-            onReady: function (e) {
-                e.target.setVolume(50);
-                document.getElementById('music-title').textContent = MUSIC['birthday'].title;
-            }
-        }
-    });
-};
+const audio = document.getElementById('bg-audio');
+const musicToggle = document.getElementById('music-toggle');
+const musicTitle = document.getElementById('music-title');
 
 function loadMusic(type) {
-    if (ytPlayer && ytPlayer.loadVideoById) {
-        ytPlayer.loadVideoById(MUSIC[type].id);
-        ytPlayer.pauseVideo();
-    }
-    document.getElementById('music-title').textContent = MUSIC[type].title;
+    const wasPlaying = !audio.paused;
+    audio.src = MUSIC[type].url;
+    audio.volume = document.getElementById('volume-slider').value / 100;
+    musicTitle.textContent = MUSIC[type].title;
+    if (wasPlaying) audio.play();
+    else musicToggle.textContent = 'Play';
 }
 
+musicToggle.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play();
+        musicToggle.textContent = 'Pause';
+    } else {
+        audio.pause();
+        musicToggle.textContent = 'Play';
+    }
+});
+
 document.getElementById('volume-slider').addEventListener('input', function () {
-    if (ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(parseInt(this.value));
+    audio.volume = this.value / 100;
     document.getElementById('volume-display').textContent = this.value + '%';
 });
+
+loadMusic('birthday');
 
 // ── Theme toggle ──
 const themeBtn = document.getElementById('theme-toggle');
