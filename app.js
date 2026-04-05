@@ -164,6 +164,9 @@ function load() {
 
     loadMusic(currentType);
 
+    // Nav collapsed state
+    if (getCookie('ppt-nav-collapsed') === '1') setNavCollapsed(true);
+
     // Section layout (main grid + sidebar)
     const mainSections    = JSON.parse(getCookie('ppt-main-sections')    || 'null');
     const sidebarSections = JSON.parse(getCookie('ppt-sidebar-sections') || '[]');
@@ -476,6 +479,50 @@ document.getElementById('cal-next').addEventListener('click', () => {
     calDate.setMonth(calDate.getMonth() + 1);
     renderCalendar();
 });
+
+// ── Side nav ──
+const sideNav     = document.getElementById('side-nav');
+const navToggleBtn = document.getElementById('nav-toggle');
+
+function setNavCollapsed(collapsed) {
+    sideNav.classList.toggle('collapsed', collapsed);
+    navToggleBtn.innerHTML  = collapsed ? '&#8250;' : '&#8249;';
+    navToggleBtn.title      = collapsed ? 'Expand navigation' : 'Collapse navigation';
+    setCookie('ppt-nav-collapsed', collapsed ? '1' : '0');
+}
+
+navToggleBtn.addEventListener('click', () => {
+    setNavCollapsed(!sideNav.classList.contains('collapsed'));
+});
+
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.getElementById(item.dataset.target);
+        if (!target) return;
+        const headerH = document.querySelector('header').offsetHeight;
+        const top = target.getBoundingClientRect().top + window.scrollY - headerH - 12;
+        window.scrollTo({ top, behavior: 'smooth' });
+    });
+});
+
+// Scroll spy
+const navSections = [...document.querySelectorAll('.nav-item')]
+    .map(item => ({ item, el: document.getElementById(item.dataset.target) }))
+    .filter(x => x.el);
+
+const navObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const id = entry.target.id;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.target === id);
+            });
+        }
+    });
+}, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+
+navSections.forEach(({ el }) => navObserver.observe(el));
 
 // ── Init ──
 load();
