@@ -43,7 +43,7 @@ themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('light');
     const isLight = document.body.classList.contains('light');
     themeBtn.textContent = isLight ? 'Dark Mode' : 'Light Mode';
-    localStorage.setItem('ppt-theme', isLight ? 'light' : 'dark');
+    setCookie('ppt-theme', isLight ? 'light' : 'dark');
 });
 
 // ── Party type checklists ──
@@ -62,49 +62,60 @@ let guests = [];
 let expenses = [];
 let budgetTotal = 0;
 
+// ── Cookies ──
+function setCookie(name, value, days = 365) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+}
+
 // ── Save / Load ──
 function save() {
-    localStorage.setItem('ppt-type',     currentType);
-    localStorage.setItem('ppt-checklist', JSON.stringify(checklist));
-    localStorage.setItem('ppt-guests',    JSON.stringify(guests));
-    localStorage.setItem('ppt-expenses',  JSON.stringify(expenses));
-    localStorage.setItem('ppt-budget',    budgetTotal);
-    localStorage.setItem('ppt-notes',     document.getElementById('notes-input').value);
-    localStorage.setItem('ppt-volume',    document.getElementById('volume-slider').value);
+    setCookie('ppt-type',      currentType);
+    setCookie('ppt-checklist', JSON.stringify(checklist));
+    setCookie('ppt-guests',    JSON.stringify(guests));
+    setCookie('ppt-expenses',  JSON.stringify(expenses));
+    setCookie('ppt-budget',    budgetTotal);
+    setCookie('ppt-notes',     document.getElementById('notes-input').value);
+    setCookie('ppt-volume',    document.getElementById('volume-slider').value);
 }
 
 function load() {
     // Theme
-    if (localStorage.getItem('ppt-theme') === 'light') {
+    if (getCookie('ppt-theme') === 'light') {
         document.body.classList.add('light');
         themeBtn.textContent = 'Dark Mode';
     }
 
     // Party type
-    currentType = localStorage.getItem('ppt-type') || 'birthday';
+    currentType = getCookie('ppt-type') || 'birthday';
     document.querySelectorAll('.type-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.type === currentType);
     });
 
     // Checklist
-    checklist = JSON.parse(localStorage.getItem('ppt-checklist') || 'null')
+    checklist = JSON.parse(getCookie('ppt-checklist') || 'null')
         || DEFAULT_CHECKLISTS[currentType].map(t => ({ text: t, done: false }));
 
     // Guests
-    guests = JSON.parse(localStorage.getItem('ppt-guests') || '[]');
+    guests = JSON.parse(getCookie('ppt-guests') || '[]');
 
     // Expenses
-    expenses = JSON.parse(localStorage.getItem('ppt-expenses') || '[]');
+    expenses = JSON.parse(getCookie('ppt-expenses') || '[]');
 
     // Budget
-    budgetTotal = parseFloat(localStorage.getItem('ppt-budget')) || 0;
+    budgetTotal = parseFloat(getCookie('ppt-budget')) || 0;
     document.getElementById('budget-total').value = budgetTotal || '';
 
     // Notes
-    document.getElementById('notes-input').value = localStorage.getItem('ppt-notes') || '';
+    document.getElementById('notes-input').value = getCookie('ppt-notes') || '';
 
     // Volume
-    const vol = localStorage.getItem('ppt-volume') || '50';
+    const vol = getCookie('ppt-volume') || '50';
     document.getElementById('volume-slider').value = vol;
     document.getElementById('volume-display').textContent = vol + '%';
     audio.volume = vol / 100;
