@@ -107,6 +107,7 @@ function save() {
     setCookie('ppt-budget',    budgetTotal);
     setCookie('ppt-notes',     document.getElementById('notes-input').value);
     setCookie('ppt-volume',    document.getElementById('volume-slider').value);
+    renderDashboard();
 }
 
 function load() {
@@ -168,6 +169,7 @@ document.querySelectorAll('.type-btn').forEach(btn => {
         renderChecklist();
         loadMusic(currentType);
         save();
+        renderDashboard();
     });
 });
 
@@ -293,6 +295,32 @@ function addExpense() {
 // ── Notes ──
 document.getElementById('notes-input').addEventListener('input', save);
 
+// ── Dashboard ──
+function renderDashboard() {
+    document.getElementById('dash-guests').textContent = guests.length;
+
+    const spent     = expenses.reduce((s, e) => s + e.cost, 0);
+    const remaining = budgetTotal - spent;
+    const remEl     = document.getElementById('dash-budget');
+    remEl.textContent  = `$${remaining.toFixed(0)}`;
+    remEl.style.color  = remaining < 0 ? 'var(--red)' : 'var(--green)';
+
+    document.getElementById('dash-expenses').textContent = `$${spent.toFixed(0)}`;
+
+    const done  = checklist.filter(t => t.done).length;
+    const total = checklist.length;
+    document.getElementById('dash-tasks').textContent = `${done} / ${total}`;
+
+    const today = new Date().toISOString().slice(0, 10);
+    const next  = calEvents.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
+    document.getElementById('dash-next').textContent = next
+        ? `${next.name} (${next.date.slice(5).replace('-', '/')})`
+        : 'None';
+
+    document.getElementById('dash-type').textContent =
+        currentType.charAt(0).toUpperCase() + currentType.slice(1);
+}
+
 // ── Calendar ──
 const TYPE_COLORS = {
     birthday: '#f472b6', wedding: '#a78bfa', graduation: '#60a5fa',
@@ -305,7 +333,7 @@ let calEvents = [];
 let calDate   = new Date();
 let calSelectedDate = '';
 
-function saveCalEvents() { setCookie('ppt-cal', JSON.stringify(calEvents)); }
+function saveCalEvents() { setCookie('ppt-cal', JSON.stringify(calEvents)); renderDashboard(); }
 function loadCalEvents() { calEvents = JSON.parse(getCookie('ppt-cal') || '[]'); }
 
 function renderCalendar() {
@@ -430,3 +458,4 @@ renderChecklist();
 renderGuests();
 renderBudget();
 renderCalendar();
+renderDashboard();
