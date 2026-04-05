@@ -202,6 +202,7 @@ function renderChecklist() {
     ul.innerHTML = '';
     checklist.forEach((item, i) => {
         const li = document.createElement('li');
+        li.dataset.idx = i;
         if (item.done) li.classList.add('done');
         li.innerHTML = `
             <input type="checkbox" ${item.done ? 'checked' : ''}>
@@ -209,12 +210,12 @@ function renderChecklist() {
             <button class="del-btn" title="Remove">✕</button>
         `;
         li.querySelector('input').addEventListener('change', () => {
-            checklist[i].done = !checklist[i].done;
-            renderChecklist();
+            checklist[+li.dataset.idx].done = !checklist[+li.dataset.idx].done;
+            li.classList.toggle('done', checklist[+li.dataset.idx].done);
             save();
         });
         li.querySelector('.del-btn').addEventListener('click', () => {
-            checklist.splice(i, 1);
+            checklist.splice(+li.dataset.idx, 1);
             renderChecklist();
             save();
         });
@@ -241,9 +242,10 @@ function renderGuests() {
     ul.innerHTML = '';
     guests.forEach((name, i) => {
         const li = document.createElement('li');
+        li.dataset.idx = i;
         li.innerHTML = `<span>${name}</span><button class="remove-btn" title="Remove">✕</button>`;
         li.querySelector('.remove-btn').addEventListener('click', () => {
-            guests.splice(i, 1);
+            guests.splice(+li.dataset.idx, 1);
             renderGuests();
             save();
         });
@@ -284,6 +286,7 @@ function renderBudget() {
     ul.innerHTML = '';
     expenses.forEach((exp, i) => {
         const li = document.createElement('li');
+        li.dataset.idx = i;
         li.innerHTML = `
             <span>${exp.name}</span>
             ${exp.phone ? `<span class="phone">${exp.phone}</span>` : ''}
@@ -291,7 +294,7 @@ function renderBudget() {
             <button class="remove-btn" title="Remove">✕</button>
         `;
         li.querySelector('.remove-btn').addEventListener('click', () => {
-            expenses.splice(i, 1);
+            expenses.splice(+li.dataset.idx, 1);
             renderBudget();
             save();
         });
@@ -482,3 +485,36 @@ renderGuests();
 renderBudget();
 renderCalendar();
 renderDashboard();
+
+// ── Sortable lists (items within sections) ──
+const listOpts = { animation: 150, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen' };
+
+Sortable.create(document.getElementById('checklist'), {
+    ...listOpts,
+    onEnd: () => {
+        const idxs = [...document.querySelectorAll('#checklist li')].map(li => +li.dataset.idx);
+        checklist = idxs.map(i => checklist[i]);
+        renderChecklist();
+        save();
+    }
+});
+
+Sortable.create(document.getElementById('guest-list'), {
+    ...listOpts,
+    onEnd: () => {
+        const idxs = [...document.querySelectorAll('#guest-list li')].map(li => +li.dataset.idx);
+        guests = idxs.map(i => guests[i]);
+        renderGuests();
+        save();
+    }
+});
+
+Sortable.create(document.getElementById('expense-list'), {
+    ...listOpts,
+    onEnd: () => {
+        const idxs = [...document.querySelectorAll('#expense-list li')].map(li => +li.dataset.idx);
+        expenses = idxs.map(i => expenses[i]);
+        renderBudget();
+        save();
+    }
+});
