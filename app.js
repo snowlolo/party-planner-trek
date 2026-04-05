@@ -34,25 +34,26 @@ musicToggle.addEventListener('click', () => {
 document.getElementById('volume-slider').addEventListener('input', function () {
     audio.volume = this.value / 100;
     document.getElementById('volume-display').textContent = this.value + '%';
+    save();
 });
-
-loadMusic('birthday');
 
 // ── Theme toggle ──
 const themeBtn = document.getElementById('theme-toggle');
 themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('light');
-    themeBtn.textContent = document.body.classList.contains('light') ? 'Dark Mode' : 'Light Mode';
+    const isLight = document.body.classList.contains('light');
+    themeBtn.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+    localStorage.setItem('ppt-theme', isLight ? 'light' : 'dark');
 });
 
 // ── Party type checklists ──
 const DEFAULT_CHECKLISTS = {
-    birthday: ['Book a venue', 'Send invitations', 'Order cake', 'Buy decorations', 'Plan activities', 'Arrange food & drinks'],
-    wedding:  ['Choose a venue', 'Set a date', 'Send invitations', 'Book catering', 'Arrange flowers', 'Plan music/DJ', 'Organize transport'],
+    birthday:   ['Book a venue', 'Send invitations', 'Order cake', 'Buy decorations', 'Plan activities', 'Arrange food & drinks'],
+    wedding:    ['Choose a venue', 'Set a date', 'Send invitations', 'Book catering', 'Arrange flowers', 'Plan music/DJ', 'Organize transport'],
     graduation: ['Book a venue', 'Send invitations', 'Order graduation cake', 'Arrange catering', 'Plan slideshow/photos', 'Buy decorations'],
-    halloween: ['Choose a theme', 'Buy costumes', 'Decorate venue', 'Plan candy/treats', 'Set up spooky lighting', 'Create playlist'],
-    holiday:  ['Decorate venue', 'Send invitations', 'Plan menu', 'Buy gifts/prizes', 'Arrange music', 'Prepare activities'],
-    custom:   [],
+    halloween:  ['Choose a theme', 'Buy costumes', 'Decorate venue', 'Plan candy/treats', 'Set up spooky lighting', 'Create playlist'],
+    holiday:    ['Decorate venue', 'Send invitations', 'Plan menu', 'Buy gifts/prizes', 'Arrange music', 'Prepare activities'],
+    custom:     [],
 };
 
 let currentType = 'birthday';
@@ -60,6 +61,56 @@ let checklist = [];
 let guests = [];
 let expenses = [];
 let budgetTotal = 0;
+
+// ── Save / Load ──
+function save() {
+    localStorage.setItem('ppt-type',     currentType);
+    localStorage.setItem('ppt-checklist', JSON.stringify(checklist));
+    localStorage.setItem('ppt-guests',    JSON.stringify(guests));
+    localStorage.setItem('ppt-expenses',  JSON.stringify(expenses));
+    localStorage.setItem('ppt-budget',    budgetTotal);
+    localStorage.setItem('ppt-notes',     document.getElementById('notes-input').value);
+    localStorage.setItem('ppt-volume',    document.getElementById('volume-slider').value);
+}
+
+function load() {
+    // Theme
+    if (localStorage.getItem('ppt-theme') === 'light') {
+        document.body.classList.add('light');
+        themeBtn.textContent = 'Dark Mode';
+    }
+
+    // Party type
+    currentType = localStorage.getItem('ppt-type') || 'birthday';
+    document.querySelectorAll('.type-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.type === currentType);
+    });
+
+    // Checklist
+    checklist = JSON.parse(localStorage.getItem('ppt-checklist') || 'null')
+        || DEFAULT_CHECKLISTS[currentType].map(t => ({ text: t, done: false }));
+
+    // Guests
+    guests = JSON.parse(localStorage.getItem('ppt-guests') || '[]');
+
+    // Expenses
+    expenses = JSON.parse(localStorage.getItem('ppt-expenses') || '[]');
+
+    // Budget
+    budgetTotal = parseFloat(localStorage.getItem('ppt-budget')) || 0;
+    document.getElementById('budget-total').value = budgetTotal || '';
+
+    // Notes
+    document.getElementById('notes-input').value = localStorage.getItem('ppt-notes') || '';
+
+    // Volume
+    const vol = localStorage.getItem('ppt-volume') || '50';
+    document.getElementById('volume-slider').value = vol;
+    document.getElementById('volume-display').textContent = vol + '%';
+    audio.volume = vol / 100;
+
+    loadMusic(currentType);
+}
 
 // ── Party type buttons ──
 document.querySelectorAll('.type-btn').forEach(btn => {
@@ -70,6 +121,7 @@ document.querySelectorAll('.type-btn').forEach(btn => {
         checklist = DEFAULT_CHECKLISTS[currentType].map(t => ({ text: t, done: false }));
         renderChecklist();
         loadMusic(currentType);
+        save();
     });
 });
 
@@ -88,10 +140,12 @@ function renderChecklist() {
         li.querySelector('input').addEventListener('change', () => {
             checklist[i].done = !checklist[i].done;
             renderChecklist();
+            save();
         });
         li.querySelector('.del-btn').addEventListener('click', () => {
             checklist.splice(i, 1);
             renderChecklist();
+            save();
         });
         ul.appendChild(li);
     });
@@ -107,6 +161,7 @@ function addChecklistItem() {
     checklist.push({ text, done: false });
     input.value = '';
     renderChecklist();
+    save();
 }
 
 // ── Guest list ──
@@ -119,6 +174,7 @@ function renderGuests() {
         li.querySelector('.remove-btn').addEventListener('click', () => {
             guests.splice(i, 1);
             renderGuests();
+            save();
         });
         ul.appendChild(li);
     });
@@ -135,12 +191,14 @@ function addGuest() {
     guests.push(name);
     input.value = '';
     renderGuests();
+    save();
 }
 
 // ── Budget ──
 document.getElementById('budget-total').addEventListener('input', e => {
     budgetTotal = parseFloat(e.target.value) || 0;
     renderBudget();
+    save();
 });
 
 function renderBudget() {
@@ -164,6 +222,7 @@ function renderBudget() {
         li.querySelector('.remove-btn').addEventListener('click', () => {
             expenses.splice(i, 1);
             renderBudget();
+            save();
         });
         ul.appendChild(li);
     });
@@ -182,10 +241,14 @@ function addExpense() {
     document.getElementById('expense-cost').value = '';
     document.getElementById('expense-phone').value = '';
     renderBudget();
+    save();
 }
 
+// ── Notes ──
+document.getElementById('notes-input').addEventListener('input', save);
+
 // ── Init ──
-checklist = DEFAULT_CHECKLISTS[currentType].map(t => ({ text: t, done: false }));
+load();
 renderChecklist();
 renderGuests();
 renderBudget();
