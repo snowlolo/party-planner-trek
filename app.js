@@ -59,33 +59,6 @@ themeBtn.addEventListener('click', () => {
     setCookie('ppt-theme', isLight ? 'light' : 'dark');
 });
 
-// ── Drag to reorder (connected grid ↔ sidebar) ──
-const sectionGroup = { name: 'sections', pull: true, put: true };
-
-function saveSectionLayout() {
-    const main    = [...document.querySelectorAll('#planner-grid section')].map(s => s.id);
-    const sidebar = [...document.querySelectorAll('#sidebar-sections section')].map(s => s.id);
-    setCookie('ppt-main-sections',    JSON.stringify(main));
-    setCookie('ppt-sidebar-sections', JSON.stringify(sidebar));
-}
-
-Sortable.create(document.getElementById('planner-grid'), {
-    group: sectionGroup,
-    handle: '.drag-handle',
-    animation: 150,
-    ghostClass: 'sortable-ghost',
-    chosenClass: 'sortable-chosen',
-    onEnd: saveSectionLayout,
-});
-
-Sortable.create(document.getElementById('sidebar-sections'), {
-    group: sectionGroup,
-    handle: '.drag-handle',
-    animation: 150,
-    ghostClass: 'sortable-ghost',
-    chosenClass: 'sortable-chosen',
-    onEnd: saveSectionLayout,
-});
 
 // ── Party type checklists ──
 const DEFAULT_CHECKLISTS = {
@@ -166,23 +139,6 @@ function load() {
 
     // Nav collapsed state
     if (getCookie('ppt-nav-collapsed') === '1') setNavCollapsed(true);
-
-    // Section layout (main grid + sidebar)
-    const mainSections    = JSON.parse(getCookie('ppt-main-sections')    || 'null');
-    const sidebarSections = JSON.parse(getCookie('ppt-sidebar-sections') || '[]');
-    const grid    = document.getElementById('planner-grid');
-    const sideBar = document.getElementById('sidebar-sections');
-
-    sidebarSections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) sideBar.appendChild(el);
-    });
-    if (mainSections) {
-        mainSections.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) grid.appendChild(el);
-        });
-    }
 }
 
 // ── Party type buttons ──
@@ -533,35 +489,3 @@ renderBudget();
 renderCalendar();
 renderDashboard();
 
-// ── Sortable lists (items within sections) ──
-const listOpts = { animation: 150, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen' };
-
-Sortable.create(document.getElementById('checklist'), {
-    ...listOpts,
-    onEnd: () => {
-        const idxs = [...document.querySelectorAll('#checklist li')].map(li => +li.dataset.idx);
-        checklist = idxs.map(i => checklist[i]);
-        renderChecklist();
-        save();
-    }
-});
-
-Sortable.create(document.getElementById('guest-list'), {
-    ...listOpts,
-    onEnd: () => {
-        const idxs = [...document.querySelectorAll('#guest-list li')].map(li => +li.dataset.idx);
-        guests = idxs.map(i => guests[i]);
-        renderGuests();
-        save();
-    }
-});
-
-Sortable.create(document.getElementById('expense-list'), {
-    ...listOpts,
-    onEnd: () => {
-        const idxs = [...document.querySelectorAll('#expense-list li')].map(li => +li.dataset.idx);
-        expenses = idxs.map(i => expenses[i]);
-        renderBudget();
-        save();
-    }
-});
