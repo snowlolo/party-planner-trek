@@ -615,6 +615,15 @@ h2 {
     flex-shrink: 0;
 }
 
+.cl-cost {
+    color: var(--pink);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+#checklist .cl-cost + .del-btn { margin-left: 8px; }
+
 /* Delete / remove buttons */
 .del-btn, .remove-btn {
     margin-left: auto;

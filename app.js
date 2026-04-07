@@ -169,6 +169,22 @@ document.querySelectorAll('.type-btn').forEach(btn => {
 });
 
 // ── Checklist ──
+function findMatchingExpense(text) {
+    if (!expenses.length) return null;
+    const words = s => s.toLowerCase().replace(/[^a-z0-9 ]/g, '').split(/\s+/).filter(w => w.length > 2);
+    const clWords = words(text);
+    let best = null, bestScore = 0;
+    expenses.forEach(exp => {
+        const expWords = words(exp.name);
+        let score = 0;
+        clWords.forEach(cw => expWords.forEach(ew => {
+            if (cw === ew || cw.includes(ew) || ew.includes(cw)) score += 2;
+        }));
+        if (score > bestScore) { bestScore = score; best = exp; }
+    });
+    return bestScore >= 2 ? best : null;
+}
+
 function renderChecklist() {
     const ul = document.getElementById('checklist');
     ul.innerHTML = '';
@@ -176,9 +192,12 @@ function renderChecklist() {
         const li = document.createElement('li');
         li.dataset.idx = i;
         if (item.done) li.classList.add('done');
+        const match = findMatchingExpense(item.text);
+        const costHTML = match ? `<span class="cl-cost">$${match.cost.toFixed(2)}</span>` : '';
         li.innerHTML = `
             <input type="checkbox" ${item.done ? 'checked' : ''}>
             <span>${item.text}</span>
+            ${costHTML}
             <button class="del-btn" title="Remove">✕</button>
         `;
         li.querySelector('input').addEventListener('change', () => {
@@ -272,6 +291,7 @@ function renderBudget() {
         });
         ul.appendChild(li);
     });
+    renderChecklist();
 }
 
 document.getElementById('expense-btn').addEventListener('click', addExpense);
