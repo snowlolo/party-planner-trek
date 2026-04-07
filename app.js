@@ -478,6 +478,68 @@ document.getElementById('cal-next').addEventListener('click', () => {
     renderCalendar();
 });
 
+// ── Invitation Card ──
+const inviteOverlay = document.getElementById('invite-overlay');
+
+function openInviteModal() {
+    // Auto-populate from current data
+    const today = new Date().toISOString().slice(0, 10);
+    const next  = calEvents.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
+
+    document.getElementById('inv-title').value    = next ? next.name : currentType.charAt(0).toUpperCase() + currentType.slice(1) + ' Party';
+    document.getElementById('inv-date').value     = next ? formatInviteDate(next.date) : '';
+    document.getElementById('inv-time').value     = '';
+    document.getElementById('inv-location').value = '';
+    document.getElementById('inv-host').value     = '';
+    document.getElementById('inv-rsvp').value     = '';
+    document.getElementById('inv-message').value  = '';
+
+    document.getElementById('invite-card').className = 'type-' + currentType;
+    updateInvitePreview();
+    inviteOverlay.removeAttribute('hidden');
+}
+
+function formatInviteDate(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const names = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const days  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const dow   = new Date(y, m - 1, d).getDay();
+    return `${days[dow]}, ${names[m - 1]} ${d}, ${y}`;
+}
+
+function updateInvitePreview() {
+    const title    = document.getElementById('inv-title').value.trim();
+    const date     = document.getElementById('inv-date').value.trim();
+    const time     = document.getElementById('inv-time').value.trim();
+    const location = document.getElementById('inv-location').value.trim();
+    const host     = document.getElementById('inv-host').value.trim();
+    const rsvp     = document.getElementById('inv-rsvp').value.trim();
+    const message  = document.getElementById('inv-message').value.trim();
+
+    document.getElementById('ic-title').textContent    = title || 'Party Name';
+    document.getElementById('ic-date').textContent     = date;
+    document.getElementById('ic-time').textContent     = time;
+    document.getElementById('ic-location').textContent = location;
+    document.getElementById('ic-host').textContent     = host;
+    document.getElementById('ic-rsvp').textContent     = rsvp;
+    document.getElementById('ic-message').textContent  = message;
+
+    document.getElementById('ic-row-date').style.display     = date     ? '' : 'none';
+    document.getElementById('ic-row-time').style.display     = time     ? '' : 'none';
+    document.getElementById('ic-row-location').style.display = location ? '' : 'none';
+    document.getElementById('ic-row-host').style.display     = host     ? '' : 'none';
+}
+
+document.getElementById('invite-card-btn').addEventListener('click', openInviteModal);
+document.getElementById('invite-close').addEventListener('click', () => inviteOverlay.setAttribute('hidden', ''));
+inviteOverlay.addEventListener('click', e => { if (e.target === inviteOverlay) inviteOverlay.setAttribute('hidden', ''); });
+
+['inv-title','inv-date','inv-time','inv-location','inv-host','inv-rsvp','inv-message'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateInvitePreview);
+});
+
+document.getElementById('invite-print-btn').addEventListener('click', () => window.print());
+
 // ── Side nav ──
 const sideNav     = document.getElementById('side-nav');
 const navToggleBtn = document.getElementById('nav-toggle');

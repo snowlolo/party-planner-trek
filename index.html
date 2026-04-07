@@ -126,6 +126,7 @@
                     <span class="dash-value" id="dash-expenses">$0</span>
                 </div>
             </div>
+            <button id="invite-card-btn">Make Invitation Card</button>
         </section>
 
 
@@ -260,6 +261,74 @@
                 <option value="custom">Custom</option>
             </select>
             <button id="cal-event-add-btn">Add Party</button>
+        </div>
+    </div>
+</div>
+
+<!-- Invitation Card Modal -->
+<div id="invite-overlay" hidden>
+    <div id="invite-modal">
+        <div id="invite-modal-header">
+            <h3>Invitation Card</h3>
+            <button id="invite-close">✕</button>
+        </div>
+        <div id="invite-body">
+
+            <!-- Form -->
+            <div id="invite-form">
+                <label class="invite-label">Title</label>
+                <input type="text" id="inv-title" placeholder="e.g. Sarah's Birthday Party">
+                <label class="invite-label">Date</label>
+                <input type="text" id="inv-date" placeholder="e.g. Saturday, June 14th">
+                <label class="invite-label">Time</label>
+                <input type="text" id="inv-time" placeholder="e.g. 6:00 PM">
+                <label class="invite-label">Location</label>
+                <input type="text" id="inv-location" placeholder="e.g. 123 Main Street">
+                <label class="invite-label">Hosted by</label>
+                <input type="text" id="inv-host" placeholder="e.g. The Johnson Family">
+                <label class="invite-label">RSVP</label>
+                <input type="text" id="inv-rsvp" placeholder="e.g. 555-1234 by June 7th">
+                <label class="invite-label">Message (optional)</label>
+                <textarea id="inv-message" placeholder="e.g. Dress code: smart casual"></textarea>
+                <button id="invite-print-btn">Print / Save as PDF</button>
+            </div>
+
+            <!-- Preview -->
+            <div id="invite-preview-wrap">
+                <div id="invite-card">
+                    <div class="ic-top-bar"></div>
+                    <div class="ic-content">
+                        <p class="ic-eyebrow">You're Invited</p>
+                        <h2 class="ic-title" id="ic-title">Party Name</h2>
+                        <div class="ic-divider"></div>
+                        <div class="ic-details">
+                            <div class="ic-row" id="ic-row-date">
+                                <span class="ic-detail-label">Date</span>
+                                <span class="ic-detail-val" id="ic-date"></span>
+                            </div>
+                            <div class="ic-row" id="ic-row-time">
+                                <span class="ic-detail-label">Time</span>
+                                <span class="ic-detail-val" id="ic-time"></span>
+                            </div>
+                            <div class="ic-row" id="ic-row-location">
+                                <span class="ic-detail-label">Location</span>
+                                <span class="ic-detail-val" id="ic-location"></span>
+                            </div>
+                            <div class="ic-row" id="ic-row-host">
+                                <span class="ic-detail-label">Hosted by</span>
+                                <span class="ic-detail-val" id="ic-host"></span>
+                            </div>
+                        </div>
+                        <div class="ic-message" id="ic-message"></div>
+                        <div class="ic-rsvp-wrap" id="ic-rsvp-wrap">
+                            <span class="ic-rsvp-label">RSVP</span>
+                            <span class="ic-rsvp-val" id="ic-rsvp"></span>
+                        </div>
+                    </div>
+                    <div class="ic-bottom-bar"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

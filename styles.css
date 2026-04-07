@@ -953,6 +953,273 @@ select {
 select:focus { border-color: var(--accent); }
 
 
+/* ── Invite Card Button ── */
+#invite-card-btn {
+    margin-top: 18px;
+    width: 100%;
+}
+
+/* ── Invite Modal ── */
+#invite-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+#invite-overlay[hidden] { display: none; }
+
+#invite-modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 860px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.18s ease;
+}
+
+#invite-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+#invite-modal-header h3 { font-size: 1rem; font-weight: 700; color: var(--text); }
+
+#invite-close {
+    background: none;
+    border: none;
+    color: var(--text3);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color var(--transition), background var(--transition);
+    transform: none; box-shadow: none;
+}
+#invite-close:hover { color: var(--red); background: rgba(248,113,113,0.1); transform: none; box-shadow: none; }
+#invite-close:active { transform: none; }
+
+#invite-body {
+    display: flex;
+    gap: 0;
+    flex: 1;
+}
+
+/* Form side */
+#invite-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 24px;
+    width: 280px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+}
+
+.invite-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+}
+
+#invite-form input, #invite-form textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 8px 11px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+#invite-form input:focus, #invite-form textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
+}
+#invite-form input::placeholder, #invite-form textarea::placeholder { color: var(--text3); }
+#invite-form textarea { min-height: 68px; resize: vertical; }
+#invite-print-btn { margin-top: 8px; width: 100%; }
+
+/* Preview side */
+#invite-preview-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    background: var(--bg3);
+}
+
+/* ── The Card ── */
+#invite-card {
+    width: 380px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #1a1a2e;
+}
+
+.ic-top-bar  { height: 10px; background: var(--ic-accent, #a78bfa); }
+.ic-bottom-bar { height: 10px; background: var(--ic-accent, #a78bfa); }
+
+.ic-content {
+    padding: 32px 36px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+}
+
+.ic-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ic-accent, #a78bfa);
+    margin-bottom: 10px;
+}
+
+.ic-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.25;
+    margin: 0 0 16px;
+}
+
+.ic-divider {
+    width: 48px;
+    height: 2px;
+    background: var(--ic-accent, #a78bfa);
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+
+.ic-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.ic-row {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.ic-detail-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ic-accent, #a78bfa);
+    min-width: 64px;
+    flex-shrink: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.ic-detail-val {
+    font-size: 0.9rem;
+    color: #222;
+    line-height: 1.4;
+}
+
+.ic-message {
+    font-size: 0.82rem;
+    color: #555;
+    font-style: italic;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 6px;
+    white-space: pre-wrap;
+}
+.ic-message:empty { display: none; }
+
+.ic-rsvp-wrap {
+    margin-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+.ic-rsvp-wrap:has(#ic-rsvp:empty) { display: none; }
+
+.ic-rsvp-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ic-accent, #a78bfa);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.ic-rsvp-val {
+    font-size: 0.88rem;
+    color: #333;
+}
+
+/* Party-type accent colours on the card */
+#invite-card.type-birthday   { --ic-accent: #f472b6; }
+#invite-card.type-wedding     { --ic-accent: #b8960c; }
+#invite-card.type-graduation  { --ic-accent: #3b82f6; }
+#invite-card.type-halloween   { --ic-accent: #ea580c; }
+#invite-card.type-holiday     { --ic-accent: #16a34a; }
+#invite-card.type-custom      { --ic-accent: #7c3aed; }
+
+/* ── Print ── */
+@media print {
+    body > *:not(#invite-overlay) { display: none !important; }
+    #invite-overlay {
+        position: static !important;
+        background: none !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+    #invite-modal {
+        box-shadow: none !important;
+        border: none !important;
+        max-height: none !important;
+        max-width: none !important;
+    }
+    #invite-modal-header, #invite-form, #invite-bottom-bar { display: none !important; }
+    #invite-body { display: block !important; }
+    #invite-preview-wrap {
+        background: none !important;
+        padding: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+    #invite-card { width: 100%; max-width: 480px; box-shadow: none !important; }
+}
+
 /* ── Responsive ── */
 @media (max-width: 1100px) {
     #app-layout { flex-direction: column; }
