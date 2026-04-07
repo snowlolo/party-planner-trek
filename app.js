@@ -50,6 +50,19 @@ settingsBtn.addEventListener('click', openSettings);
 settingsClose.addEventListener('click', closeSettings);
 overlay.addEventListener('click', closeSettings);
 
+// ── Fullscreen ──
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+});
+document.addEventListener('fullscreenchange', () => {
+    fullscreenBtn.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Enter Fullscreen';
+});
+
 // ── Theme toggle ──
 const themeBtn = document.getElementById('theme-toggle');
 themeBtn.addEventListener('click', () => {
@@ -292,18 +305,11 @@ function renderDashboard() {
 
     document.getElementById('dash-expenses').textContent = `$${spent.toFixed(0)}`;
 
-    const done  = checklist.filter(t => t.done).length;
-    const total = checklist.length;
-    document.getElementById('dash-tasks').textContent = `${done} / ${total}`;
-
-    const today = new Date().toISOString().slice(0, 10);
-    const next  = calEvents.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
-    document.getElementById('dash-next').textContent = next
-        ? `${next.name} (${next.date.slice(5).replace('-', '/')})`
-        : 'None';
-
-    document.getElementById('dash-type').textContent =
-        currentType.charAt(0).toUpperCase() + currentType.slice(1);
+    const done    = checklist.filter(t => t.done).length;
+    const total   = checklist.length;
+    const tasksEl = document.getElementById('dash-tasks');
+    tasksEl.textContent = `${done} / ${total}`;
+    tasksEl.style.color = (total > 0 && done === total) ? 'var(--green)' : '';
 }
 
 // ── Calendar ──
