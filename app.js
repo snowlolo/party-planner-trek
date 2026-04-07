@@ -318,8 +318,44 @@ let calEvents = [];
 let calDate   = new Date();
 let calSelectedDate = '';
 
-function saveCalEvents() { setCookie('ppt-cal', JSON.stringify(calEvents)); renderDashboard(); }
+function saveCalEvents() { setCookie('ppt-cal', JSON.stringify(calEvents)); renderDashboard(); updateCountdown(); }
 function loadCalEvents() { calEvents = JSON.parse(getCookie('ppt-cal') || '[]'); }
+
+function updateCountdown() {
+    const now  = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const next  = calEvents
+        .filter(e => e.date >= today)
+        .sort((a, b) => a.date.localeCompare(b.date))[0];
+
+    const nameEl  = document.getElementById('countdown-name');
+    const daysEl  = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl  = document.getElementById('cd-mins');
+    const secsEl  = document.getElementById('cd-secs');
+
+    if (!next) {
+        nameEl.textContent  = 'No upcoming parties';
+        [daysEl, hoursEl, minsEl, secsEl].forEach(el => el.textContent = '--');
+        return;
+    }
+
+    nameEl.textContent = next.name;
+
+    const target = new Date(next.date + 'T00:00:00');
+    const diff   = target - now;
+
+    if (diff <= 0) {
+        nameEl.textContent = next.name + ' — Today!';
+        [daysEl, hoursEl, minsEl, secsEl].forEach(el => el.textContent = '00');
+        return;
+    }
+
+    daysEl.textContent  = String(Math.floor(diff / 864e5)).padStart(2, '0');
+    hoursEl.textContent = String(Math.floor((diff % 864e5) / 36e5)).padStart(2, '0');
+    minsEl.textContent  = String(Math.floor((diff % 36e5) / 6e4)).padStart(2, '0');
+    secsEl.textContent  = String(Math.floor((diff % 6e4) / 1e3)).padStart(2, '0');
+}
 
 function renderCalendar() {
     const year  = calDate.getFullYear();
@@ -488,4 +524,6 @@ renderGuests();
 renderBudget();
 renderCalendar();
 renderDashboard();
+updateCountdown();
+setInterval(updateCountdown, 1000);
 

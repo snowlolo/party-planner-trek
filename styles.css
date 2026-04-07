@@ -374,6 +374,64 @@ header p {
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
 }
+
+/* ── Countdown ── */
+#countdown-wrap {
+    padding: 14px 0 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+
+#countdown-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#countdown-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 4px 6px;
+    flex: 1;
+}
+
+.countdown-num {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.countdown-lbl {
+    font-size: 0.58rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.countdown-sep {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--border2);
+    margin-bottom: 14px;
+    flex-shrink: 0;
+}
 #section-type #party-types { gap: 6px; }
 #section-type .type-btn { padding: 6px 12px; font-size: 0.82rem; }
 
