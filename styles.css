@@ -494,11 +494,24 @@ h2 {
 /* ── Planner grid ── */
 #planner-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
 #section-budget { grid-column: 1 / -1; }
-#section-notes { grid-column: 3; grid-row: 1; }
+
+/* ── Notes in sidebar ── */
+#cal-sidebar #section-notes {
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    padding: 16px 0 0;
+    box-shadow: none;
+    margin-top: 8px;
+}
+#cal-sidebar #notes-input {
+    min-height: 160px;
+}
 
 /* ── Lists ── */
 #checklist, #guest-list, #expense-list {
@@ -507,7 +520,7 @@ h2 {
     flex-direction: column;
     gap: 8px;
     margin-bottom: 16px;
-    max-height: 280px;
+    max-height: 380px;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border2) transparent;
@@ -899,7 +912,6 @@ select:focus { border-color: var(--accent); }
     #app-layout { padding: 16px; }
     #planner-grid { grid-template-columns: 1fr; }
     #section-budget { grid-column: 1; }
-    #section-notes { grid-column: 1; grid-row: auto; }
     #budget-summary { flex-direction: column; }
     #dash-grid { grid-template-columns: 1fr 1fr; }
 }
