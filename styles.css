@@ -691,6 +691,7 @@ h2 {
 .legend-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .legend-cost { font-weight: 600; color: var(--text); flex-shrink: 0; }
 .legend-pct  { font-size: 0.75rem; color: var(--text3); flex-shrink: 0; min-width: 36px; text-align: right; }
+#spending-legend .legend-remaining { opacity: 0.6; border-top: 1px solid var(--border); padding-top: 6px; margin-top: 2px; }
 
 #spending-empty {
     font-size: 0.875rem;

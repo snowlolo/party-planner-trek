@@ -365,7 +365,7 @@ const centerTextPlugin = {
         if (!chart.data.datasets[0].data.length) return;
         const { ctx, chartArea: { top, bottom, left, right } } = chart;
         const cx = (left + right) / 2, cy = (top + bottom) / 2;
-        const spent = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+        const spent = expenses.reduce((a, e) => a + e.cost, 0);
         const style = getComputedStyle(document.documentElement);
         ctx.save();
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -393,11 +393,19 @@ function renderSpendingChart() {
     bodyEl.style.display  = '';
     emptyEl.style.display = 'none';
 
+    const spent     = expenses.reduce((s, e) => s + e.cost, 0);
+    const remaining = budgetTotal > 0 ? Math.max(0, budgetTotal - spent) : 0;
+    const base      = budgetTotal > 0 ? budgetTotal : spent;
+
     const labels = expenses.map(e => e.name);
     const data   = expenses.map(e => e.cost);
     const colors = expenses.map((_, i) => CHART_PALETTE[i % CHART_PALETTE.length]);
-    const total  = data.reduce((a, b) => a + b, 0);
-    const style  = getComputedStyle(document.documentElement);
+
+    if (remaining > 0) {
+        labels.push('Remaining');
+        data.push(remaining);
+        colors.push('#334155');
+    }
 
     if (spendingChart) {
         spendingChart.data.labels = labels;
@@ -426,7 +434,7 @@ function renderSpendingChart() {
     const ul = document.getElementById('spending-legend');
     ul.innerHTML = '';
     expenses.forEach((exp, i) => {
-        const pct = total > 0 ? ((exp.cost / total) * 100).toFixed(0) : 0;
+        const pct = base > 0 ? ((exp.cost / base) * 100).toFixed(0) : 0;
         const li  = document.createElement('li');
         li.innerHTML = `
             <span class="legend-dot" style="background:${CHART_PALETTE[i % CHART_PALETTE.length]}"></span>
@@ -436,9 +444,20 @@ function renderSpendingChart() {
         `;
         ul.appendChild(li);
     });
+    if (remaining > 0) {
+        const remPct = ((remaining / budgetTotal) * 100).toFixed(0);
+        const li = document.createElement('li');
+        li.className = 'legend-remaining';
+        li.innerHTML = `
+            <span class="legend-dot" style="background:#334155;border:1px solid #475569"></span>
+            <span class="legend-name">Remaining</span>
+            <span class="legend-cost">$${remaining.toFixed(2)}</span>
+            <span class="legend-pct">${remPct}%</span>
+        `;
+        ul.appendChild(li);
+    }
 
     // Progress bar
-    const spent = expenses.reduce((s, e) => s + e.cost, 0);
     const pct   = budgetTotal > 0 ? Math.min(100, (spent / budgetTotal) * 100) : 0;
     document.getElementById('spending-bar-fill').style.width      = pct + '%';
     document.getElementById('spending-bar-fill').style.background = pct >= 100 ? 'var(--red)' : pct >= 80 ? '#fbbf24' : 'var(--accent)';
