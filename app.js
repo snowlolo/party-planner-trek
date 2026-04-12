@@ -824,6 +824,23 @@ const navObserver = new IntersectionObserver(entries => {
 
 navSections.forEach(({ el }) => navObserver.observe(el));
 
+// ── Share ──
+document.getElementById('share-btn').addEventListener('click', async () => {
+    const shareData = {
+        title: 'Party Planner Trek',
+        text: 'Plan your next event with Party Planner Trek — a free app for teens & young adults!',
+        url: 'https://party-planner-trek.vercel.app'
+    };
+    const btn = document.getElementById('share-btn');
+    if (navigator.share) {
+        try { await navigator.share(shareData); } catch (_) {}
+    } else {
+        await navigator.clipboard.writeText(shareData.url);
+        btn.textContent = 'Link copied!';
+        setTimeout(() => { btn.textContent = 'Share this app'; }, 2000);
+    }
+});
+
 // ── Init ──
 load();
 loadCalEvents();
