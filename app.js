@@ -129,8 +129,9 @@ function load() {
     checklist = JSON.parse(getCookie('ppt-checklist') || 'null')
         || DEFAULT_CHECKLISTS[currentType].map(t => ({ text: t, done: false }));
 
-    // Guests
+    // Guests (handle legacy string[] format)
     guests = JSON.parse(getCookie('ppt-guests') || '[]');
+    guests = guests.map(g => typeof g === 'string' ? { name: g, important: false } : g);
 
     // Expenses
     expenses = JSON.parse(getCookie('ppt-expenses') || '[]');
@@ -231,18 +232,38 @@ function addChecklistItem() {
 function renderGuests() {
     const ul = document.getElementById('guest-list');
     ul.innerHTML = '';
-    guests.forEach((name, i) => {
+
+    // Important guests first
+    const sorted = guests
+        .map((g, i) => ({ ...g, origIdx: i }))
+        .sort((a, b) => b.important - a.important);
+
+    sorted.forEach(({ name, important, origIdx }) => {
         const li = document.createElement('li');
-        li.dataset.idx = i;
-        li.innerHTML = `<span>${name}</span><button class="remove-btn" title="Remove">✕</button>`;
+        if (important) li.classList.add('vip');
+        li.dataset.idx = origIdx;
+        li.innerHTML = `
+            <button class="vip-btn${important ? ' on' : ''}" title="${important ? 'Remove VIP' : 'Mark as VIP'}">&#9733;</button>
+            <span>${name}</span>
+            <button class="remove-btn" title="Remove">&#x2715;</button>
+        `;
+        li.querySelector('.vip-btn').addEventListener('click', () => {
+            guests[origIdx].important = !guests[origIdx].important;
+            renderGuests();
+            save();
+        });
         li.querySelector('.remove-btn').addEventListener('click', () => {
-            guests.splice(+li.dataset.idx, 1);
+            guests.splice(origIdx, 1);
             renderGuests();
             save();
         });
         ul.appendChild(li);
     });
+
     document.getElementById('guest-count').textContent = guests.length;
+    const vipN = guests.filter(g => g.important).length;
+    const vipEl = document.getElementById('vip-count');
+    vipEl.textContent = vipN > 0 ? `${vipN} VIP` : '';
 }
 
 document.getElementById('guest-btn').addEventListener('click', addGuest);
@@ -252,7 +273,7 @@ function addGuest() {
     const input = document.getElementById('guest-input');
     const name = input.value.trim();
     if (!name) return;
-    guests.push(name);
+    guests.push({ name, important: false });
     input.value = '';
     renderGuests();
     save();

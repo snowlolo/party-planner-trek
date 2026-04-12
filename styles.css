@@ -655,6 +655,42 @@ h2 {
     vertical-align: middle;
 }
 
+#vip-count {
+    background: rgba(251,191,36,0.18);
+    color: #fbbf24;
+    border-radius: 12px;
+    padding: 1px 9px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+#vip-count:empty { display: none; }
+
+/* VIP star button */
+.vip-btn {
+    background: none;
+    border: none;
+    color: var(--border2);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 2px 4px;
+    line-height: 1;
+    border-radius: 4px;
+    flex-shrink: 0;
+    transition: color var(--transition);
+    transform: none;
+    box-shadow: none;
+}
+.vip-btn:hover  { color: #fbbf24; transform: none; box-shadow: none; }
+.vip-btn:active { transform: none; }
+.vip-btn.on     { color: #fbbf24; }
+
+#guest-list li.vip {
+    border-color: rgba(251,191,36,0.35);
+    background: rgba(251,191,36,0.06);
+}
+
 /* ── Add rows ── */
 #checklist-add, #guest-add {
     display: flex;
