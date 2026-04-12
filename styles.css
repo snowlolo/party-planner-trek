@@ -163,6 +163,12 @@ header p {
     letter-spacing: 0.1em;
 }
 
+#settings-desc {
+    font-size: 0.85rem;
+    color: var(--text2);
+    line-height: 1.55;
+}
+
 #music-title {
     font-size: 0.9rem;
     font-weight: 600;
