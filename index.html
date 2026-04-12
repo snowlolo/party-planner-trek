@@ -153,35 +153,68 @@
 
             <section id="section-budget">
                 <h2>Budget</h2>
-                <div id="budget-summary">
-                    <div class="budget-stat">
-                        <span class="stat-label">Total Budget</span>
-                        <input type="number" id="budget-total" placeholder="0" min="0">
+                <div id="budget-inner">
+                    <div id="budget-main">
+                        <div id="budget-summary">
+                            <div class="budget-stat">
+                                <span class="stat-label">Total Budget</span>
+                                <input type="number" id="budget-total" placeholder="0" min="0">
+                            </div>
+                            <div class="budget-stat">
+                                <span class="stat-label">Spent</span>
+                                <span id="budget-spent">$0</span>
+                            </div>
+                            <div class="budget-stat">
+                                <span class="stat-label">Remaining</span>
+                                <span id="budget-remaining">$0</span>
+                            </div>
+                        </div>
+                        <ul id="expense-list"></ul>
+                        <div id="expense-add">
+                            <div class="expense-row">
+                                <label>Item</label>
+                                <input type="text" id="expense-name" placeholder="e.g. Cake">
+                            </div>
+                            <div class="expense-row">
+                                <label>Cost ($)</label>
+                                <input type="number" id="expense-cost" placeholder="e.g. 50" min="0">
+                            </div>
+                            <div class="expense-row">
+                                <label>Phone</label>
+                                <input type="tel" id="expense-phone" placeholder="e.g. 555-1234">
+                            </div>
+                            <button id="expense-btn">Add Expense</button>
+                        </div>
                     </div>
-                    <div class="budget-stat">
-                        <span class="stat-label">Spent</span>
-                        <span id="budget-spent">$0</span>
+
+                    <!-- Mini Calculator -->
+                    <div id="budget-calc">
+                        <p class="settings-label" style="margin-bottom:10px;">Calculator</p>
+                        <div id="calc-display">0</div>
+                        <div id="calc-expr"></div>
+                        <div id="calc-btns">
+                            <button class="calc-btn calc-fn" data-val="C">C</button>
+                            <button class="calc-btn calc-fn" data-val="back">&#8592;</button>
+                            <button class="calc-btn calc-fn" data-val="%">%</button>
+                            <button class="calc-btn calc-op" data-val="/">&#247;</button>
+                            <button class="calc-btn calc-num" data-val="7">7</button>
+                            <button class="calc-btn calc-num" data-val="8">8</button>
+                            <button class="calc-btn calc-num" data-val="9">9</button>
+                            <button class="calc-btn calc-op" data-val="*">&#215;</button>
+                            <button class="calc-btn calc-num" data-val="4">4</button>
+                            <button class="calc-btn calc-num" data-val="5">5</button>
+                            <button class="calc-btn calc-num" data-val="6">6</button>
+                            <button class="calc-btn calc-op" data-val="-">&#8722;</button>
+                            <button class="calc-btn calc-num" data-val="1">1</button>
+                            <button class="calc-btn calc-num" data-val="2">2</button>
+                            <button class="calc-btn calc-num" data-val="3">3</button>
+                            <button class="calc-btn calc-op" data-val="+">+</button>
+                            <button class="calc-btn calc-num calc-zero" data-val="0">0</button>
+                            <button class="calc-btn calc-num" data-val=".">.</button>
+                            <button class="calc-btn calc-eq" data-val="=">=</button>
+                        </div>
+                        <button id="calc-use-btn">&#8594; Use as Cost</button>
                     </div>
-                    <div class="budget-stat">
-                        <span class="stat-label">Remaining</span>
-                        <span id="budget-remaining">$0</span>
-                    </div>
-                </div>
-                <ul id="expense-list"></ul>
-                <div id="expense-add">
-                    <div class="expense-row">
-                        <label>Item</label>
-                        <input type="text" id="expense-name" placeholder="e.g. Cake">
-                    </div>
-                    <div class="expense-row">
-                        <label>Cost ($)</label>
-                        <input type="number" id="expense-cost" placeholder="e.g. 50" min="0">
-                    </div>
-                    <div class="expense-row">
-                        <label>Phone</label>
-                        <input type="tel" id="expense-phone" placeholder="e.g. 555-1234">
-                    </div>
-                    <button id="expense-btn">Add Expense</button>
                 </div>
             </section>
 

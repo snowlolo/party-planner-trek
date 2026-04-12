@@ -331,6 +331,70 @@ function addExpense() {
     save();
 }
 
+// ── Mini Calculator ──
+let calcVal  = '0';
+let calcPrev = null;
+let calcOp   = null;
+let calcJustEvaled = false;
+
+function calcUpdate() {
+    const el = document.getElementById('calc-display');
+    el.textContent = calcVal;
+    el.style.fontSize = calcVal.length > 10 ? '1rem' : calcVal.length > 7 ? '1.2rem' : '1.5rem';
+    const exprParts = [calcPrev, calcOp === '*' ? '×' : calcOp === '/' ? '÷' : calcOp].filter(Boolean);
+    document.getElementById('calc-expr').textContent = exprParts.join(' ');
+}
+
+function calcInput(v) {
+    if (v === 'C') {
+        calcVal = '0'; calcPrev = null; calcOp = null; calcJustEvaled = false;
+    } else if (v === 'back') {
+        calcVal = calcVal.length > 1 ? calcVal.slice(0, -1) : '0';
+    } else if (v === '%') {
+        calcVal = String(parseFloat(calcVal) / 100);
+    } else if (['+', '-', '*', '/'].includes(v)) {
+        if (calcOp && !calcJustEvaled) calcEval();
+        calcPrev = parseFloat(calcVal);
+        calcOp   = v;
+        calcJustEvaled = false;
+        // Flag that next digit starts fresh
+        calcVal  = calcVal; // keep showing current for reference
+        calcJustEvaled = true;  // reuse flag: next digit resets display
+    } else if (v === '=') {
+        if (calcOp && calcPrev !== null) { calcEval(); calcOp = null; }
+    } else {
+        if (calcJustEvaled && ['+', '-', '*', '/'].includes(calcOp || '')) {
+            calcVal = v === '.' ? '0.' : v;
+            calcJustEvaled = false;
+        } else {
+            if (v === '.' && calcVal.includes('.')) return;
+            calcVal = calcVal === '0' && v !== '.' ? v : calcVal + v;
+        }
+    }
+    calcUpdate();
+}
+
+function calcEval() {
+    const curr = parseFloat(calcVal);
+    const ops  = { '+': (a,b)=>a+b, '-': (a,b)=>a-b, '*': (a,b)=>a*b, '/': (a,b)=>b!==0?a/b:NaN };
+    const res  = ops[calcOp](calcPrev, curr);
+    calcVal    = isNaN(res) ? 'Error' : String(parseFloat(res.toFixed(10)));
+    calcPrev   = null;
+    calcJustEvaled = true;
+}
+
+document.querySelectorAll('.calc-btn').forEach(btn => {
+    btn.addEventListener('click', () => calcInput(btn.dataset.val));
+});
+
+document.getElementById('calc-use-btn').addEventListener('click', () => {
+    const v = parseFloat(calcVal);
+    if (!isNaN(v) && v >= 0) {
+        document.getElementById('expense-cost').value = v;
+        document.getElementById('expense-cost').focus();
+    }
+});
+
 // ── Notes ──
 document.getElementById('notes-input').addEventListener('input', save);
 
