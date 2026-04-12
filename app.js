@@ -780,6 +780,37 @@ inviteOverlay.addEventListener('click', e => { if (e.target === inviteOverlay) i
 
 document.getElementById('invite-print-btn').addEventListener('click', () => window.print());
 
+document.getElementById('invite-share-btn').addEventListener('click', async () => {
+    const v = id => document.getElementById(id).value.trim();
+    const title    = v('inv-title');
+    const date     = v('inv-date');
+    const time     = v('inv-time');
+    const location = v('inv-location');
+    const host     = v('inv-host');
+    const rsvp     = v('inv-rsvp');
+    const message  = v('inv-message');
+
+    const lines = [];
+    if (title)    lines.push(`🎉 ${title}`);
+    if (date)     lines.push(`📅 ${date}${time ? ' at ' + time : ''}`);
+    if (location) lines.push(`📍 ${location}`);
+    if (host)     lines.push(`Hosted by: ${host}`);
+    if (rsvp)     lines.push(`RSVP: ${rsvp}`);
+    if (message)  lines.push(`\n${message}`);
+    lines.push('\nPlan yours at party-planner-trek.vercel.app');
+
+    const text = lines.join('\n');
+    const btn  = document.getElementById('invite-share-btn');
+
+    if (navigator.share) {
+        try { await navigator.share({ title: title || 'Party Invite', text }); } catch (_) {}
+    } else {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Share Event'; }, 2000);
+    }
+});
+
 // ── Side nav ──
 const sideNav     = document.getElementById('side-nav');
 const navToggleBtn = document.getElementById('nav-toggle');
