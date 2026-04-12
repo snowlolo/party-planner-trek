@@ -555,7 +555,105 @@ h2 {
     grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
-#section-budget { grid-column: 1 / -1; }
+#section-budget   { grid-column: 1 / -1; }
+#section-spending { grid-column: 1 / -1; }
+
+/* ── Spending Chart ── */
+#spending-body {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+}
+
+#spending-chart-wrap {
+    width: 240px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+#spending-right {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#spending-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.spending-bar-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.spending-bar-label { color: var(--text2); }
+
+#spending-bar-pct { color: var(--accent); font-weight: 700; }
+
+#spending-bar-track {
+    height: 10px;
+    background: var(--bg3);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+#spending-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: var(--accent);
+    transition: width 0.4s ease, background 0.3s ease;
+    width: 0%;
+}
+
+#spending-legend {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border2) transparent;
+}
+
+#spending-legend li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: var(--text2);
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.legend-cost { font-weight: 600; color: var(--text); flex-shrink: 0; }
+.legend-pct  { font-size: 0.75rem; color: var(--text3); flex-shrink: 0; min-width: 36px; text-align: right; }
+
+#spending-empty {
+    font-size: 0.875rem;
+    color: var(--text3);
+    text-align: center;
+    padding: 12px 0;
+}
+
+@media (max-width: 680px) {
+    #spending-body { flex-direction: column; }
+    #spending-chart-wrap { width: 100%; max-width: 240px; margin: 0 auto; }
+}
 
 /* ── Notes in sidebar ── */
 #cal-sidebar #section-notes {

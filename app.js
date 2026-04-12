@@ -313,6 +313,7 @@ function renderBudget() {
         ul.appendChild(li);
     });
     renderChecklist();
+    renderSpendingChart();
 }
 
 document.getElementById('expense-btn').addEventListener('click', addExpense);
@@ -329,6 +330,99 @@ function addExpense() {
     document.getElementById('expense-phone').value = '';
     renderBudget();
     save();
+}
+
+// ── Spending Chart ──
+const CHART_PALETTE = ['#60a5fa','#f472b6','#4ade80','#fb923c','#a78bfa','#34d399','#f87171','#fbbf24','#818cf8','#e879f9'];
+
+let spendingChart = null;
+
+const centerTextPlugin = {
+    id: 'centerText',
+    afterDraw(chart) {
+        if (!chart.data.datasets[0].data.length) return;
+        const { ctx, chartArea: { top, bottom, left, right } } = chart;
+        const cx = (left + right) / 2, cy = (top + bottom) / 2;
+        const spent = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+        const style = getComputedStyle(document.documentElement);
+        ctx.save();
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.font = 'bold 1.25rem Segoe UI, system-ui, sans-serif';
+        ctx.fillStyle = style.getPropertyValue('--text').trim() || '#e2e8f0';
+        ctx.fillText('$' + spent.toFixed(0), cx, cy - 9);
+        ctx.font = '0.68rem Segoe UI, system-ui, sans-serif';
+        ctx.fillStyle = style.getPropertyValue('--text3').trim() || '#64748b';
+        ctx.fillText('total spent', cx, cy + 11);
+        ctx.restore();
+    }
+};
+
+function renderSpendingChart() {
+    const emptyEl = document.getElementById('spending-empty');
+    const bodyEl  = document.getElementById('spending-body');
+
+    if (!expenses.length) {
+        bodyEl.style.display  = 'none';
+        emptyEl.style.display = '';
+        if (spendingChart) { spendingChart.destroy(); spendingChart = null; }
+        return;
+    }
+
+    bodyEl.style.display  = '';
+    emptyEl.style.display = 'none';
+
+    const labels = expenses.map(e => e.name);
+    const data   = expenses.map(e => e.cost);
+    const colors = expenses.map((_, i) => CHART_PALETTE[i % CHART_PALETTE.length]);
+    const total  = data.reduce((a, b) => a + b, 0);
+    const style  = getComputedStyle(document.documentElement);
+
+    if (spendingChart) {
+        spendingChart.data.labels = labels;
+        spendingChart.data.datasets[0].data = data;
+        spendingChart.data.datasets[0].backgroundColor = colors;
+        spendingChart.update();
+    } else {
+        spendingChart = new Chart(document.getElementById('spending-chart'), {
+            type: 'doughnut',
+            data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 0 }] },
+            options: {
+                responsive: true,
+                cutout: '68%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: { label: ctx => ` ${ctx.label}: $${ctx.parsed.toFixed(2)}` }
+                    }
+                }
+            },
+            plugins: [centerTextPlugin]
+        });
+    }
+
+    // Legend list
+    const ul = document.getElementById('spending-legend');
+    ul.innerHTML = '';
+    expenses.forEach((exp, i) => {
+        const pct = total > 0 ? ((exp.cost / total) * 100).toFixed(0) : 0;
+        const li  = document.createElement('li');
+        li.innerHTML = `
+            <span class="legend-dot" style="background:${CHART_PALETTE[i % CHART_PALETTE.length]}"></span>
+            <span class="legend-name">${exp.name}</span>
+            <span class="legend-cost">$${exp.cost.toFixed(2)}</span>
+            <span class="legend-pct">${pct}%</span>
+        `;
+        ul.appendChild(li);
+    });
+
+    // Progress bar
+    const spent = expenses.reduce((s, e) => s + e.cost, 0);
+    const pct   = budgetTotal > 0 ? Math.min(100, (spent / budgetTotal) * 100) : 0;
+    document.getElementById('spending-bar-fill').style.width      = pct + '%';
+    document.getElementById('spending-bar-fill').style.background = pct >= 100 ? 'var(--red)' : pct >= 80 ? '#fbbf24' : 'var(--accent)';
+    document.getElementById('spending-bar-pct').textContent       = pct.toFixed(0) + '%';
+    document.getElementById('spending-spent-lbl').textContent     = `$${spent.toFixed(2)} spent`;
+    document.getElementById('spending-budget-lbl').textContent    = budgetTotal > 0 ? `of $${budgetTotal.toFixed(0)}` : 'no budget set';
 }
 
 // ── Mini Calculator ──
@@ -697,6 +791,7 @@ renderGuests();
 renderBudget();
 renderCalendar();
 renderDashboard();
+renderSpendingChart();
 updateCountdown();
 setInterval(updateCountdown, 1000);
 

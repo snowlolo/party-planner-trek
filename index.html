@@ -218,6 +218,33 @@
                 </div>
             </section>
 
+            <!-- Spending Chart -->
+            <section id="section-spending">
+                <h2>Spending Breakdown</h2>
+                <div id="spending-body">
+                    <div id="spending-chart-wrap">
+                        <canvas id="spending-chart"></canvas>
+                    </div>
+                    <div id="spending-right">
+                        <div id="spending-progress">
+                            <div class="spending-bar-row">
+                                <span class="spending-bar-label">Budget used</span>
+                                <span id="spending-bar-pct">0%</span>
+                            </div>
+                            <div id="spending-bar-track">
+                                <div id="spending-bar-fill"></div>
+                            </div>
+                            <div class="spending-bar-row" style="margin-top:6px;">
+                                <span id="spending-spent-lbl" style="color:var(--text2);">$0 spent</span>
+                                <span id="spending-budget-lbl" style="color:var(--text3);">of $0</span>
+                            </div>
+                        </div>
+                        <ul id="spending-legend"></ul>
+                    </div>
+                </div>
+                <p id="spending-empty">Add expenses in the Budget section to see your spending breakdown.</p>
+            </section>
+
         </div>
     </main>
 
@@ -366,6 +393,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script src="app.js"></script>
 </body>
 </html>
