@@ -1338,8 +1338,8 @@ select:focus { border-color: var(--accent); }
 }
 #invite-form input::placeholder, #invite-form textarea::placeholder { color: var(--text3); }
 #invite-form textarea { min-height: 68px; resize: vertical; }
-#invite-action-btns { display: flex; gap: 8px; margin-top: 8px; }
-#invite-action-btns button { flex: 1; }
+#invite-action-btns { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+#invite-action-btns button { width: 100%; }
 #invite-share-btn { background: var(--bg3); color: var(--accent); border: 1px solid var(--accent); }
 #invite-share-btn:hover { background: var(--accent); color: #fff; }
 
