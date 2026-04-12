@@ -549,6 +549,49 @@ h2 {
     box-shadow: 0 4px 12px rgba(96,165,250,0.35);
 }
 
+/* ── Type lock display ── */
+#type-locked-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    gap: 8px;
+}
+#type-locked-left {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+.type-lock-icon {
+    width: 15px;
+    height: 15px;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+#type-locked-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+#type-unlock-btn {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: border-color var(--transition), color var(--transition);
+    font-family: inherit;
+}
+#type-unlock-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
 /* ── Planner grid ── */
 #planner-grid {
     display: grid;
@@ -813,7 +856,7 @@ input[type="tel"]:focus {
 input::placeholder { color: var(--text3); }
 
 /* ── Primary buttons ── */
-button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.calc-btn) {
+button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.calc-btn):not(#type-unlock-btn) {
     background: var(--accent);
     color: #fff;
     border: none;
@@ -825,12 +868,12 @@ button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.cal
     transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
     white-space: nowrap;
 }
-button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.calc-btn):hover {
+button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.calc-btn):not(#type-unlock-btn):hover {
     background: var(--accent2);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(96,165,250,0.3);
 }
-button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.calc-btn):active {
+button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.calc-btn):not(#type-unlock-btn):active {
     transform: translateY(0);
 }
 

@@ -253,6 +253,16 @@
         <!-- Party Type -->
         <div id="section-type">
             <p class="settings-label" style="margin-bottom:10px;">Party Type</p>
+            <div id="type-locked-display" hidden>
+                <div id="type-locked-left">
+                    <svg class="type-lock-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="9" width="12" height="10" rx="2"/>
+                        <path d="M7 9V6a3 3 0 0 1 6 0v3"/>
+                    </svg>
+                    <span id="type-locked-name">Birthday</span>
+                </div>
+                <button id="type-unlock-btn">Change</button>
+            </div>
             <div id="party-types">
                 <button class="type-btn active" data-type="birthday">Birthday</button>
                 <button class="type-btn" data-type="sleepover">Sleepover</button>

@@ -84,6 +84,7 @@ const DEFAULT_CHECKLISTS = {
 };
 
 let currentType = 'birthday';
+let typeLocked = false;
 let checklist = [];
 let guests = [];
 let expenses = [];
@@ -101,14 +102,25 @@ function getCookie(name) {
 }
 
 // ── Save / Load ──
+function renderTypeLock() {
+    const display  = document.getElementById('type-locked-display');
+    const picker   = document.getElementById('party-types');
+    const nameEl   = document.getElementById('type-locked-name');
+    const btn = document.querySelector(`.type-btn[data-type="${currentType}"]`);
+    nameEl.textContent = btn ? btn.textContent : currentType;
+    display.hidden = !typeLocked;
+    picker.hidden  = typeLocked;
+}
+
 function save() {
-    setCookie('ppt-type',      currentType);
-    setCookie('ppt-checklist', JSON.stringify(checklist));
-    setCookie('ppt-guests',    JSON.stringify(guests));
-    setCookie('ppt-expenses',  JSON.stringify(expenses));
-    setCookie('ppt-budget',    budgetTotal);
-    setCookie('ppt-notes',     document.getElementById('notes-input').value);
-    setCookie('ppt-volume',    document.getElementById('volume-slider').value);
+    setCookie('ppt-type',        currentType);
+    setCookie('ppt-type-locked', typeLocked ? '1' : '0');
+    setCookie('ppt-checklist',   JSON.stringify(checklist));
+    setCookie('ppt-guests',      JSON.stringify(guests));
+    setCookie('ppt-expenses',    JSON.stringify(expenses));
+    setCookie('ppt-budget',      budgetTotal);
+    setCookie('ppt-notes',       document.getElementById('notes-input').value);
+    setCookie('ppt-volume',      document.getElementById('volume-slider').value);
     renderDashboard();
 }
 
@@ -121,9 +133,11 @@ function load() {
 
     // Party type
     currentType = getCookie('ppt-type') || 'birthday';
+    typeLocked = getCookie('ppt-type-locked') === '1';
     document.querySelectorAll('.type-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.type === currentType);
     });
+    renderTypeLock();
 
     // Checklist
     checklist = JSON.parse(getCookie('ppt-checklist') || 'null')
@@ -161,12 +175,20 @@ document.querySelectorAll('.type-btn').forEach(btn => {
         document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentType = btn.dataset.type;
+        typeLocked = true;
+        renderTypeLock();
         checklist = DEFAULT_CHECKLISTS[currentType].map(t => ({ text: t, done: false }));
         renderChecklist();
         loadMusic(currentType);
         save();
         renderDashboard();
     });
+});
+
+document.getElementById('type-unlock-btn').addEventListener('click', () => {
+    typeLocked = false;
+    renderTypeLock();
+    setCookie('ppt-type-locked', '0');
 });
 
 // ── Checklist ──
