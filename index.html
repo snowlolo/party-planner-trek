@@ -14,7 +14,7 @@
     <div id="header-inner">
         <div>
             <h1>Party Planner Trek</h1>
-            <p>Plan the perfect party, every time.</p>
+            <p>Your squad's go-to party planner.</p>
         </div>
         <button id="settings-btn">Settings</button>
     </div>
@@ -137,7 +137,7 @@
                 <h2>Checklist</h2>
                 <ul id="checklist"></ul>
                 <div id="checklist-add">
-                    <input type="text" id="checklist-input" placeholder="Add a task...">
+                    <input type="text" id="checklist-input" placeholder="Add a task or to-do...">
                     <button id="checklist-btn">Add</button>
                 </div>
             </section>
@@ -146,7 +146,7 @@
                 <h2>Guest List <span id="guest-count">0</span><span id="vip-count"></span></h2>
                 <ul id="guest-list"></ul>
                 <div id="guest-add">
-                    <input type="text" id="guest-input" placeholder="Guest name...">
+                    <input type="text" id="guest-input" placeholder="Add someone to the squad...">
                     <button id="guest-btn">Add</button>
                 </div>
             </section>
@@ -255,10 +255,10 @@
             <p class="settings-label" style="margin-bottom:10px;">Party Type</p>
             <div id="party-types">
                 <button class="type-btn active" data-type="birthday">Birthday</button>
-                <button class="type-btn" data-type="wedding">Wedding</button>
+                <button class="type-btn" data-type="sleepover">Sleepover</button>
                 <button class="type-btn" data-type="graduation">Graduation</button>
                 <button class="type-btn" data-type="halloween">Halloween</button>
-                <button class="type-btn" data-type="holiday">Holiday</button>
+                <button class="type-btn" data-type="hangout">Hangout</button>
                 <button class="type-btn" data-type="custom">Custom</button>
             </div>
         </div>
@@ -295,7 +295,7 @@
         <div id="cal-grid"></div>
         <section id="section-notes">
             <h2>Notes</h2>
-            <textarea id="notes-input" placeholder="Write any notes about your party here..."></textarea>
+            <textarea id="notes-input" placeholder="Vibe ideas, reminders, squad stuff... whatever you need."></textarea>
         </section>
     </aside>
 
@@ -314,10 +314,10 @@
             <input type="text" id="cal-event-name" placeholder="Party name...">
             <select id="cal-event-type">
                 <option value="birthday">Birthday</option>
-                <option value="wedding">Wedding</option>
+                <option value="sleepover">Sleepover</option>
                 <option value="graduation">Graduation</option>
                 <option value="halloween">Halloween</option>
-                <option value="holiday">Holiday</option>
+                <option value="hangout">Hangout</option>
                 <option value="custom">Custom</option>
             </select>
             <button id="cal-event-add-btn">Add Party</button>
@@ -337,19 +337,19 @@
             <!-- Form -->
             <div id="invite-form">
                 <label class="invite-label">Title</label>
-                <input type="text" id="inv-title" placeholder="e.g. Sarah's Birthday Party">
+                <input type="text" id="inv-title" placeholder="e.g. Maya's Sweet 16">
                 <label class="invite-label">Date</label>
                 <input type="text" id="inv-date" placeholder="e.g. Saturday, June 14th">
                 <label class="invite-label">Time</label>
-                <input type="text" id="inv-time" placeholder="e.g. 6:00 PM">
+                <input type="text" id="inv-time" placeholder="e.g. 7:00 PM">
                 <label class="invite-label">Location</label>
-                <input type="text" id="inv-location" placeholder="e.g. 123 Main Street">
+                <input type="text" id="inv-location" placeholder="e.g. The Park, Main St">
                 <label class="invite-label">Hosted by</label>
-                <input type="text" id="inv-host" placeholder="e.g. The Johnson Family">
+                <input type="text" id="inv-host" placeholder="e.g. Maya & the squad">
                 <label class="invite-label">RSVP</label>
-                <input type="text" id="inv-rsvp" placeholder="e.g. 555-1234 by June 7th">
+                <input type="text" id="inv-rsvp" placeholder="e.g. Text Maya by June 7th">
                 <label class="invite-label">Message (optional)</label>
-                <textarea id="inv-message" placeholder="e.g. Dress code: smart casual"></textarea>
+                <textarea id="inv-message" placeholder="e.g. Dress code: all black 🖤"></textarea>
                 <button id="invite-print-btn">Print / Save as PDF</button>
             </div>
 

@@ -1,11 +1,11 @@
 // ── Music ──
 const MUSIC = {
-    birthday:   { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', title: 'Birthday Party Mix' },
-    wedding:    { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', title: 'Wedding Ambience' },
-    graduation: { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', title: 'Graduation Celebration' },
+    birthday:   { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', title: 'Birthday Bangers' },
+    sleepover:  { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', title: 'Late Night Sleepover Mix' },
+    graduation: { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', title: 'Grad Celebration Mix' },
     halloween:  { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', title: 'Halloween Spooky Mix' },
-    holiday:    { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', title: 'Holiday Music' },
-    custom:     { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', title: 'Party Beats' },
+    hangout:    { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', title: 'Chill Hangout Beats' },
+    custom:     { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', title: 'Party Playlist' },
 };
 
 const audio = document.getElementById('bg-audio');
@@ -75,11 +75,11 @@ themeBtn.addEventListener('click', () => {
 
 // ── Party type checklists ──
 const DEFAULT_CHECKLISTS = {
-    birthday:   ['Book a venue', 'Send invitations', 'Order cake', 'Buy decorations', 'Plan activities', 'Arrange food & drinks'],
-    wedding:    ['Choose a venue', 'Set a date', 'Send invitations', 'Book catering', 'Arrange flowers', 'Plan music/DJ', 'Organize transport'],
-    graduation: ['Book a venue', 'Send invitations', 'Order graduation cake', 'Arrange catering', 'Plan slideshow/photos', 'Buy decorations'],
-    halloween:  ['Choose a theme', 'Buy costumes', 'Decorate venue', 'Plan candy/treats', 'Set up spooky lighting', 'Create playlist'],
-    holiday:    ['Decorate venue', 'Send invitations', 'Plan menu', 'Buy gifts/prizes', 'Arrange music', 'Prepare activities'],
+    birthday:   ['Pick a venue or spot', 'Send invites to the squad', 'Order a cake', 'Buy decorations', 'Make a playlist', 'Plan activities & games', 'Arrange snacks & drinks'],
+    sleepover:  ['Send invites', 'Get sleeping bags & pillows', 'Pick movies to watch', 'Stock up on snacks', 'Set up gaming or activities', 'Make a playlist', 'Arrange breakfast'],
+    graduation: ['Book a venue or spot', 'Send invites', 'Order graduation cake', 'Plan food & drinks', 'Set up a photo area', 'Make a slideshow', 'Buy decorations'],
+    halloween:  ['Pick your costume', 'Buy costume supplies', 'Decorate the venue', 'Plan candy & treats', 'Set up spooky lighting', 'Create a scary playlist', 'Plan games & activities'],
+    hangout:    ['Choose a location', 'Invite your crew', 'Plan snacks & drinks', 'Set up games or activities', 'Make a playlist', 'Grab supplies', 'Sort transport home'],
     custom:     [],
 };
 
@@ -513,8 +513,8 @@ function renderDashboard() {
 
 // ── Calendar ──
 const TYPE_COLORS = {
-    birthday: '#f472b6', wedding: '#a78bfa', graduation: '#60a5fa',
-    halloween: '#fb923c', holiday: '#4ade80', custom: '#94a3b8',
+    birthday: '#f472b6', sleepover: '#a78bfa', graduation: '#60a5fa',
+    halloween: '#fb923c', hangout: '#4ade80', custom: '#94a3b8',
 };
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAY_NAMES   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];

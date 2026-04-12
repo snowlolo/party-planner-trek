@@ -1,6 +1,6 @@
 # Party Planner Trek
 
-A static party planning web app for organizing all sorts of parties — birthdays, weddings, graduations, Halloween, holidays, and custom events.
+A static party planning web app built for teens and young adults — birthdays, sleepovers, graduations, Halloween, hangouts, and custom events.
 
 **Live site:** [party-planner-trek.vercel.app](https://party-planner-trek.vercel.app)
 

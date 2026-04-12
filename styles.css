@@ -1421,11 +1421,11 @@ select:focus { border-color: var(--accent); }
 
 /* Party-type accent colours on the card */
 #invite-card.type-birthday   { --ic-accent: #f472b6; }
-#invite-card.type-wedding     { --ic-accent: #b8960c; }
-#invite-card.type-graduation  { --ic-accent: #3b82f6; }
-#invite-card.type-halloween   { --ic-accent: #ea580c; }
-#invite-card.type-holiday     { --ic-accent: #16a34a; }
-#invite-card.type-custom      { --ic-accent: #2563eb; }
+#invite-card.type-sleepover  { --ic-accent: #a78bfa; }
+#invite-card.type-graduation { --ic-accent: #3b82f6; }
+#invite-card.type-halloween  { --ic-accent: #ea580c; }
+#invite-card.type-hangout    { --ic-accent: #4ade80; }
+#invite-card.type-custom     { --ic-accent: #2563eb; }
 
 /* ── Print ── */
 @media print {
