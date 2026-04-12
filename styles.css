@@ -650,11 +650,6 @@ h2 {
     padding: 12px 0;
 }
 
-@media (max-width: 680px) {
-    #spending-body { flex-direction: column; }
-    #spending-chart-wrap { width: 100%; max-width: 240px; margin: 0 auto; }
-}
-
 /* ── Notes in sidebar ── */
 #cal-sidebar #section-notes {
     background: transparent;
@@ -978,11 +973,6 @@ button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.cal
     white-space: nowrap;
 }
 #calc-use-btn:hover { background: var(--accent2); }
-
-@media (max-width: 900px) {
-    #budget-inner { flex-direction: column; }
-    #budget-calc  { width: 100%; }
-}
 
 /* Expense items */
 #expense-list li .cost  { color: var(--pink); font-weight: 600; margin-left: auto; margin-right: 8px; }
@@ -1463,23 +1453,121 @@ select:focus { border-color: var(--accent); }
     #invite-card { width: 100%; max-width: 480px; box-shadow: none !important; }
 }
 
+/* ── Mobile Bottom Nav ── */
+#mobile-nav { display: none; }
+
 /* ── Responsive ── */
+
+/* Tablet landscape */
 @media (max-width: 1100px) {
     #app-layout { flex-direction: column; }
     #cal-sidebar { width: 100%; position: static; max-height: none; }
 }
+
+/* Tablet portrait — collapse side nav to icons */
 @media (max-width: 900px) {
     #side-nav { width: 56px; }
-    #side-nav .nav-label { opacity: 0; pointer-events: none; }
+    #side-nav .nav-label, #side-nav .nav-divider { opacity: 0; pointer-events: none; }
     #nav-toggle { margin: 0 auto 4px; }
+    #budget-inner { flex-direction: column; }
+    #budget-calc  { width: 100%; }
 }
+
+/* Phone — hide side nav, show bottom nav */
 @media (max-width: 680px) {
-    header { padding: 14px 16px; }
-    header h1 { font-size: 1.4rem; }
-    #side-nav { display: none; }
-    #app-layout { padding: 16px; }
-    #planner-grid { grid-template-columns: 1fr; }
-    #section-budget { grid-column: 1; }
-    #budget-summary { flex-direction: column; }
-    #dash-grid { grid-template-columns: 1fr; }
+    /* Body padding for bottom nav */
+    body { padding-bottom: 64px; }
+
+    /* Header */
+    header { padding: 12px 16px; }
+    header h1 { font-size: 1.25rem; }
+    header p  { display: none; }
+    #settings-btn { padding: 6px 12px; font-size: 0.8rem; }
+
+    /* Navigation */
+    #side-nav   { display: none; }
+    #mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 60px;
+        background: var(--bg2);
+        border-top: 1px solid var(--border);
+        z-index: 50;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 4px;
+        box-shadow: 0 -4px 16px rgba(0,0,0,0.2);
+    }
+    .mob-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 6px 10px;
+        color: var(--text3);
+        text-decoration: none;
+        font-size: 0.58rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: color var(--transition);
+        flex: 1;
+    }
+    .mob-nav-item svg  { width: 22px; height: 22px; }
+    .mob-nav-item:hover, .mob-nav-item.active { color: var(--accent); }
+
+    /* Layout */
+    #app-layout   { padding: 12px; gap: 12px; }
+    #planner-grid { grid-template-columns: 1fr; gap: 12px; }
+    #section-budget, #section-spending { grid-column: 1; }
+
+    /* Cards — tighter padding */
+    section { padding: 18px 16px; }
+    #section-dashboard { padding: 16px; }
+
+    /* Dashboard */
+    #dash-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .dash-value { font-size: 1.3rem; }
+    #invite-card-btn { margin-top: 12px; }
+
+    /* Budget */
+    #budget-summary { flex-direction: row; flex-wrap: wrap; }
+    .budget-stat    { min-width: calc(50% - 8px); }
+
+    /* Lists */
+    #checklist, #guest-list, #expense-list { max-height: 220px; }
+
+    /* Calendar sidebar */
+    #cal-sidebar { padding: 14px 12px; }
+
+    /* Spending chart */
+    #spending-body { flex-direction: column; }
+    #spending-chart-wrap { width: 100%; max-width: 220px; margin: 0 auto; }
+
+    /* Settings panel */
+    #settings-panel { width: min(300px, 92vw); }
+
+    /* Calendar modal */
+    #cal-modal { padding: 18px 16px; }
+
+    /* Invite modal */
+    #invite-overlay { padding: 0; align-items: flex-end; }
+    #invite-modal   { max-height: 92vh; border-radius: var(--radius) var(--radius) 0 0; }
+    #invite-body    { flex-direction: column; }
+    #invite-form    { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 45vh; overflow-y: auto; }
+    #invite-preview-wrap { padding: 16px; }
+    #invite-card    { width: 100%; max-width: 320px; }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+    header h1 { font-size: 1.1rem; }
+    #app-layout { padding: 8px; gap: 8px; }
+    section { padding: 14px 12px; }
+    #dash-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dash-value { font-size: 1.1rem; }
+    .mob-nav-item { padding: 6px 6px; }
 }

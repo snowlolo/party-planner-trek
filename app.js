@@ -754,7 +754,7 @@ navToggleBtn.addEventListener('click', () => {
     setNavCollapsed(!sideNav.classList.contains('collapsed'));
 });
 
-document.querySelectorAll('.nav-item').forEach(item => {
+document.querySelectorAll('.nav-item, .mob-nav-item').forEach(item => {
     item.addEventListener('click', e => {
         e.preventDefault();
         const target = document.getElementById(item.dataset.target);
@@ -766,7 +766,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
 
 // Scroll spy
-const navSections = [...document.querySelectorAll('.nav-item')]
+const navSections = [...document.querySelectorAll('.nav-item, .mob-nav-item')]
     .map(item => ({ item, el: document.getElementById(item.dataset.target) }))
     .filter(x => x.el);
 
@@ -774,7 +774,7 @@ const navObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const id = entry.target.id;
-            document.querySelectorAll('.nav-item').forEach(item => {
+            document.querySelectorAll('.nav-item, .mob-nav-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.target === id);
             });
         }
