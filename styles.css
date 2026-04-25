@@ -928,6 +928,9 @@ button:not(.type-btn):not(.del-btn):not(.remove-btn):not(#theme-toggle):not(.cal
     text-align: center;
     outline: none;
 }
+.budget-stat input[type="number"] { -moz-appearance: textfield; }
+.budget-stat input[type="number"]::-webkit-outer-spin-button,
+.budget-stat input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 #budget-remaining.over { color: var(--red); }
 #budget-remaining.ok  { color: var(--green); }
